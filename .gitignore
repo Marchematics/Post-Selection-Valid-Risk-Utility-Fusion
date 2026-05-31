@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.log
+*.aux
+*.fls
+*.fdb_latexmk
+*.blg
+*.out
+.DS_Store
+.ipynb_checkpoints/
+venv/
+.venv/

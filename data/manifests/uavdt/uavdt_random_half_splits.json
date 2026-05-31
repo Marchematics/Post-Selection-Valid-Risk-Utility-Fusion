@@ -1,0 +1,46 @@
+{
+  "dataset": "uavdt",
+  "description": "Fixed random 153/152 half-splits used for UAVDT clean-split robustness checks.",
+  "rows": [
+    {
+      "calibration_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_1_cal153.csv",
+      "calibration_n": 153,
+      "evaluation_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_1_eval152.csv",
+      "evaluation_n": 152,
+      "seed": 100,
+      "split_name": "random_half_1"
+    },
+    {
+      "calibration_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_2_cal153.csv",
+      "calibration_n": 153,
+      "evaluation_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_2_eval152.csv",
+      "evaluation_n": 152,
+      "seed": 101,
+      "split_name": "random_half_2"
+    },
+    {
+      "calibration_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_3_cal153.csv",
+      "calibration_n": 153,
+      "evaluation_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_3_eval152.csv",
+      "evaluation_n": 152,
+      "seed": 102,
+      "split_name": "random_half_3"
+    },
+    {
+      "calibration_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_4_cal153.csv",
+      "calibration_n": 153,
+      "evaluation_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_4_eval152.csv",
+      "evaluation_n": 152,
+      "seed": 103,
+      "split_name": "random_half_4"
+    },
+    {
+      "calibration_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_5_cal153.csv",
+      "calibration_n": 153,
+      "evaluation_manifest": "reproducibility/manifests/uavdt/uavdt_val_random_half_5_eval152.csv",
+      "evaluation_n": 152,
+      "seed": 104,
+      "split_name": "random_half_5"
+    }
+  ]
+}
