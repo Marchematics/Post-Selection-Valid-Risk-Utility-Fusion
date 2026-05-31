@@ -291,8 +291,11 @@ def select_threshold(
             "threshold": float(threshold),
             "cal_cp": upper,
             "cal_risk": result.miss_risk,
-            "cal_precision": result.precision,
+            "cal_misses": result.misses,
+            "cal_n_gt": result.n_gt,
+            "cal_tp": result.tp,
             "cal_fp": result.fp,
+            "cal_precision": result.precision,
         }
         rows.append(row)
         if upper <= float(alpha):
@@ -325,7 +328,13 @@ def run_split(
     cal_gt, _, cal_meta_raw = filter_manifest(gt, pred, meta, cal_manifest)
     eval_gt, _, eval_meta_raw = filter_manifest(gt, pred, meta, eval_manifest)
     m = len(FAMILY)
-    per_conf = 1.0 - (1.0 - float(confidence)) / float(m) if family_correct else float(confidence)
+    if family_correct:
+        risk_conf = 1.0 - (1.0 - float(confidence)) / (2.0 * float(m))
+        fp_conf = risk_conf
+    else:
+        risk_conf = float(confidence)
+        fp_conf = float(confidence)
+    per_conf = min(risk_conf, fp_conf)
     candidate_rows = []
     eval_rows = []
     per_image_rows = []
@@ -341,13 +350,13 @@ def run_split(
             cal_scores,
             cal_pred,
             alpha=alpha_select,
-            confidence=per_conf,
+            confidence=risk_conf,
             grid_size=grid_size,
         )
         threshold = float(selected["threshold"])
         cal_pi = per_image_fp(cal_gt_c, cal_pred, cal_meta, threshold=threshold, iou=iou)
         cal_fp_mean = float(cal_pi["fp"].mean()) if len(cal_pi) else float("nan")
-        cal_fp_upper = hoeffding_upper_bounded(cal_pi["fp"].to_numpy(), per_conf, fp_bound_cap)
+        cal_fp_upper = hoeffding_upper_bounded(cal_pi["fp"].to_numpy(), fp_conf, fp_bound_cap)
         eval_result = evaluate_object_threshold(eval_objects, eval_scores, threshold)
         eval_pi = per_image_fp(eval_gt_c, eval_pred, eval_meta, threshold=threshold, iou=iou)
         eval_fp_upper = hoeffding_upper_bounded(eval_pi["fp"].to_numpy(), confidence, fp_bound_cap)
@@ -365,6 +374,8 @@ def run_split(
             "family_correct": family_correct,
             "confidence": confidence,
             "per_candidate_confidence": per_conf,
+            "risk_confidence": risk_conf,
+            "fp_confidence": fp_conf,
             "alpha": alpha,
             "alpha_select": alpha_select,
             "beta_fp": beta_fp,
@@ -373,12 +384,22 @@ def run_split(
             "threshold_feasible": bool(selected["threshold_feasible"]),
             "cal_cp": float(selected["cal_cp"]),
             "cal_risk": float(selected["cal_risk"]),
+            "cal_misses": int(selected["cal_misses"]),
+            "cal_n_gt": int(selected["cal_n_gt"]),
+            "cal_tp": int(selected["cal_tp"]),
+            "cal_fp": int(selected["cal_fp"]),
             "cal_precision": float(selected["cal_precision"]),
+            "cal_images": int(len(cal_meta)),
             "cal_fp_img": cal_fp_mean,
             "cal_fp_upper": cal_fp_upper,
             "eval_risk": eval_result.miss_risk,
+            "eval_misses": int(eval_result.misses),
+            "eval_n_gt": int(eval_result.n_gt),
+            "eval_tp": int(eval_result.tp),
+            "eval_fp": int(eval_result.fp),
             "eval_cp": cp_upper(eval_result.misses, eval_result.n_gt, confidence),
             "eval_precision": eval_result.precision,
+            "eval_images": int(len(eval_meta)),
             "eval_fp_img": float(eval_result.fp / len(eval_meta)) if len(eval_meta) else float("nan"),
             "eval_fp_upper": eval_fp_upper,
             "eval_pass": bool(eval_result.miss_risk <= alpha),
@@ -519,9 +540,15 @@ def main() -> None:
         "selection_mode",
         "threshold",
         "cal_cp",
+        "risk_confidence",
+        "fp_confidence",
         "alpha_select",
+        "cal_misses",
+        "cal_n_gt",
         "cal_fp_img",
         "cal_fp_upper",
+        "eval_misses",
+        "eval_n_gt",
         "eval_risk",
         "eval_precision",
         "eval_fp_img",
