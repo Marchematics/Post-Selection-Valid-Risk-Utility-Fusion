@@ -26,7 +26,6 @@ if str(ROOT / "scripts") not in sys.path:
 
 from certify_miss_risk import (  # noqa: E402
     box_iou_matrix,
-    candidate_thresholds,
     cp_upper,
     evaluate_object_threshold,
     filter_manifest,
@@ -62,6 +61,7 @@ class Contract:
 
 
 FAMILY: tuple[Contract, ...] = (
+    Contract("raw640", resolution=640),
     Contract("raw960", resolution=960),
     Contract("union"),
     Contract("nms040", nms_iou=0.40),
@@ -105,6 +105,39 @@ FAMILY: tuple[Contract, ...] = (
         single_penalty_960=0.88,
     ),
 )
+
+
+def fixed_thresholds(grid_size: int) -> list[float]:
+    """Deterministic threshold grid used by the finite-family theorem."""
+    base = np.linspace(0.0, 1.0, int(grid_size), dtype=np.float64)
+    anchors = np.asarray(
+        [
+            0.001,
+            0.003,
+            0.005,
+            0.0075,
+            0.01,
+            0.015,
+            0.02,
+            0.025,
+            0.03,
+            0.035,
+            0.04,
+            0.045,
+            0.05,
+            0.075,
+            0.10,
+            0.15,
+            0.20,
+            0.25,
+            0.35,
+            0.50,
+            0.75,
+            0.90,
+        ],
+        dtype=np.float64,
+    )
+    return sorted(float(v) for v in np.unique(np.concatenate([base, anchors])) if np.isfinite(v))
 
 
 def sequence_id(name: str) -> str:
@@ -284,7 +317,7 @@ def select_threshold(
 ) -> dict:
     selected = None
     rows = []
-    for threshold in candidate_thresholds(cal_pred, grid_size):
+    for threshold in fixed_thresholds(grid_size):
         result = evaluate_object_threshold(cal_objects, cal_scores, threshold)
         upper = cp_upper(result.misses, result.n_gt, confidence)
         row = {
@@ -328,9 +361,10 @@ def run_split(
     cal_gt, _, cal_meta_raw = filter_manifest(gt, pred, meta, cal_manifest)
     eval_gt, _, eval_meta_raw = filter_manifest(gt, pred, meta, eval_manifest)
     m = len(FAMILY)
+    threshold_count = len(fixed_thresholds(grid_size))
     if family_correct:
         risk_conf = 1.0 - (1.0 - float(confidence)) / (2.0 * float(m))
-        fp_conf = risk_conf
+        fp_conf = 1.0 - (1.0 - float(confidence)) / (2.0 * float(m) * float(threshold_count))
     else:
         risk_conf = float(confidence)
         fp_conf = float(confidence)
@@ -371,6 +405,7 @@ def run_split(
             "split": split_name,
             "contract": contract.name,
             "family_size": m,
+            "threshold_grid_size": threshold_count,
             "family_correct": family_correct,
             "confidence": confidence,
             "per_candidate_confidence": per_conf,
