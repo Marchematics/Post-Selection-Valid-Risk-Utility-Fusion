@@ -55,3 +55,15 @@ python scripts/post_selection_family_audit.py \
   --iou 0.25 \
   --out-prefix smoke_check
 ```
+
+## Cluster-Ratio Main Audit
+
+The current manuscript title is "Cluster-Robust Post-Selection Risk-Utility Fusion for UAV Object Detection". The cluster-ratio audit adds image-unit calibration for object-weighted miss risk using the statistic `M_g - alpha N_g` and fixed-sequence LTT threshold selection.
+
+Reproduce the main cluster-ratio row with:
+
+```bash
+bash run_reproduce_cluster_ratio.sh
+```
+
+Expected selected row: UAVDT image-cluster certificate, `support_floor`, threshold `0.03125`, `z_upper=-0.0073`, `fp_upper=52.1`, lockbox risk `0.0306`, precision `0.3741`, and `36.9` FP/image.

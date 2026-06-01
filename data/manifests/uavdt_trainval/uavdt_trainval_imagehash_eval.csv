@@ -1,0 +1,146 @@
+dataset,split_name,position,img_id,img_name
+uavdt,uavdt_trainval_imagehash_eval,0,3,train:DJI-405-720p00701.jpg
+uavdt,uavdt_trainval_imagehash_eval,1,4,train:DJI-405-720p00721.jpg
+uavdt,uavdt_trainval_imagehash_eval,2,8,train:DJI-405-720p02201.jpg
+uavdt,uavdt_trainval_imagehash_eval,3,9,train:DJI-405-720p02251.jpg
+uavdt,uavdt_trainval_imagehash_eval,4,30,train:DJI-670-720p02201.jpg
+uavdt,uavdt_trainval_imagehash_eval,5,35,train:DJI-670-720p03651.jpg
+uavdt,uavdt_trainval_imagehash_eval,6,51,train:DJI_0032 (7_19)_n227.jpg
+uavdt,uavdt_trainval_imagehash_eval,7,55,train:DJI_0032 (7_19)_n239.jpg
+uavdt,uavdt_trainval_imagehash_eval,8,89,train:DJI_0032 (7_19)_n5.jpg
+uavdt,uavdt_trainval_imagehash_eval,9,92,train:DJI_0032 (7_19)_n525.jpg
+uavdt,uavdt_trainval_imagehash_eval,10,96,train:DJI_0032 (7_19)_n550.jpg
+uavdt,uavdt_trainval_imagehash_eval,11,124,train:DJI_0032 (7_19)_n781.jpg
+uavdt,uavdt_trainval_imagehash_eval,12,131,train:DJI_0033 (7_24)_n160.jpg
+uavdt,uavdt_trainval_imagehash_eval,13,133,train:DJI_0033 (7_24)_n165.jpg
+uavdt,uavdt_trainval_imagehash_eval,14,142,train:DJI_0033 (7_24)_n224.jpg
+uavdt,uavdt_trainval_imagehash_eval,15,154,train:DJI_0033 (7_24)_n289.jpg
+uavdt,uavdt_trainval_imagehash_eval,16,155,train:DJI_0033 (7_24)_n290.jpg
+uavdt,uavdt_trainval_imagehash_eval,17,156,train:DJI_0033 (7_24)_n293.jpg
+uavdt,uavdt_trainval_imagehash_eval,18,193,train:DJI_0034 (7_25)_n65.jpg
+uavdt,uavdt_trainval_imagehash_eval,19,197,train:DJI_0954 (6_33)_n1.jpg
+uavdt,uavdt_trainval_imagehash_eval,20,213,train:DJI_0954 (6_33)_n208.jpg
+uavdt,uavdt_trainval_imagehash_eval,21,214,train:DJI_0954 (6_33)_n209.jpg
+uavdt,uavdt_trainval_imagehash_eval,22,218,train:DJI_0954 (6_33)_n232.jpg
+uavdt,uavdt_trainval_imagehash_eval,23,230,train:DJI_0954 (6_33)_n304.jpg
+uavdt,uavdt_trainval_imagehash_eval,24,247,train:DJI_0954 (6_33)_n6.jpg
+uavdt,uavdt_trainval_imagehash_eval,25,250,train:DJI_0954 (6_33)_n63.jpg
+uavdt,uavdt_trainval_imagehash_eval,26,259,train:DJI_0954 (6_33)_n92.jpg
+uavdt,uavdt_trainval_imagehash_eval,27,263,train:DJI_0955 (6_23)_n102.jpg
+uavdt,uavdt_trainval_imagehash_eval,28,274,train:DJI_0955 (6_23)_n140.jpg
+uavdt,uavdt_trainval_imagehash_eval,29,280,train:DJI_0955 (6_23)_n182.jpg
+uavdt,uavdt_trainval_imagehash_eval,30,285,train:DJI_0955 (6_23)_n224.jpg
+uavdt,uavdt_trainval_imagehash_eval,31,296,train:DJI_0955 (6_23)_n293.jpg
+uavdt,uavdt_trainval_imagehash_eval,32,305,train:DJI_0955 (6_23)_n326.jpg
+uavdt,uavdt_trainval_imagehash_eval,33,311,train:DJI_0955 (6_23)_n44.jpg
+uavdt,uavdt_trainval_imagehash_eval,34,313,train:DJI_0955 (6_23)_n52.jpg
+uavdt,uavdt_trainval_imagehash_eval,35,320,train:DJI_0955 (6_23)_n84.jpg
+uavdt,uavdt_trainval_imagehash_eval,36,324,train:DJI_0956 (6_28)_n101.jpg
+uavdt,uavdt_trainval_imagehash_eval,37,331,train:DJI_0956 (6_28)_n129.jpg
+uavdt,uavdt_trainval_imagehash_eval,38,337,train:DJI_0956 (6_28)_n155.jpg
+uavdt,uavdt_trainval_imagehash_eval,39,373,train:DJI_0956 (6_28)_n44.jpg
+uavdt,uavdt_trainval_imagehash_eval,40,387,train:DJI_0957 (6_35)_n114.jpg
+uavdt,uavdt_trainval_imagehash_eval,41,401,train:DJI_0957 (6_35)_n9.jpg
+uavdt,uavdt_trainval_imagehash_eval,42,416,train:DJI_0958(6_57)_n154.jpg
+uavdt,uavdt_trainval_imagehash_eval,43,424,train:DJI_0958(6_57)_n197.jpg
+uavdt,uavdt_trainval_imagehash_eval,44,430,train:DJI_0958(6_57)_n234.jpg
+uavdt,uavdt_trainval_imagehash_eval,45,453,train:DJI_0958(6_57)_n352.jpg
+uavdt,uavdt_trainval_imagehash_eval,46,461,train:DJI_0960(7_07)_n112.jpg
+uavdt,uavdt_trainval_imagehash_eval,47,467,train:DJI_0960(7_07)_n140.jpg
+uavdt,uavdt_trainval_imagehash_eval,48,477,train:DJI_0960(7_07)_n192.jpg
+uavdt,uavdt_trainval_imagehash_eval,49,494,train:DJI_0960(7_07)_n302.jpg
+uavdt,uavdt_trainval_imagehash_eval,50,500,train:DJI_0960(7_07)_n348.jpg
+uavdt,uavdt_trainval_imagehash_eval,51,504,train:DJI_0960(7_07)_n362.jpg
+uavdt,uavdt_trainval_imagehash_eval,52,508,train:DJI_0960(7_07)_n376.jpg
+uavdt,uavdt_trainval_imagehash_eval,53,548,train:DJI_0961(7_10)_n163.jpg
+uavdt,uavdt_trainval_imagehash_eval,54,576,train:DJI_0961(7_10)_n55.jpg
+uavdt,uavdt_trainval_imagehash_eval,55,604,train:DJI_0962(7_32)_n196.jpg
+uavdt,uavdt_trainval_imagehash_eval,56,666,train:DJI_0963(7_37)_n187.jpg
+uavdt,uavdt_trainval_imagehash_eval,57,703,train:DJI_0963(7_37)_n4.jpg
+uavdt,uavdt_trainval_imagehash_eval,58,713,train:DJI_0964(7_41)_n113.jpg
+uavdt,uavdt_trainval_imagehash_eval,59,721,train:DJI_0964(7_41)_n141.jpg
+uavdt,uavdt_trainval_imagehash_eval,60,728,train:DJI_0964(7_41)_n174.jpg
+uavdt,uavdt_trainval_imagehash_eval,61,737,train:DJI_0964(7_41)_n233.jpg
+uavdt,uavdt_trainval_imagehash_eval,62,745,train:DJI_0964(7_41)_n273.jpg
+uavdt,uavdt_trainval_imagehash_eval,63,746,train:DJI_0964(7_41)_n276.jpg
+uavdt,uavdt_trainval_imagehash_eval,64,750,train:DJI_0964(7_41)_n30.jpg
+uavdt,uavdt_trainval_imagehash_eval,65,752,train:DJI_0964(7_41)_n315.jpg
+uavdt,uavdt_trainval_imagehash_eval,66,772,train:DJI_0964(7_41)_n449.jpg
+uavdt,uavdt_trainval_imagehash_eval,67,784,train:DJI_0964(7_41)_n514.jpg
+uavdt,uavdt_trainval_imagehash_eval,68,812,train:DJI_0964(7_41)_n692.jpg
+uavdt,uavdt_trainval_imagehash_eval,69,821,train:DJI_0964(7_41)_n744.jpg
+uavdt,uavdt_trainval_imagehash_eval,70,831,train:DJI_0965(7_42)_n35.jpg
+uavdt,uavdt_trainval_imagehash_eval,71,836,train:DJI_0965(7_42)_n49.jpg
+uavdt,uavdt_trainval_imagehash_eval,72,842,train:DJI_0965(7_42)_n79.jpg
+uavdt,uavdt_trainval_imagehash_eval,73,846,train:DJI_0970_n105.jpg
+uavdt,uavdt_trainval_imagehash_eval,74,850,train:DJI_0970_n13.jpg
+uavdt,uavdt_trainval_imagehash_eval,75,851,train:DJI_0970_n131.jpg
+uavdt,uavdt_trainval_imagehash_eval,76,868,train:DJI_0970_n316.jpg
+uavdt,uavdt_trainval_imagehash_eval,77,873,train:DJI_0970_n360.jpg
+uavdt,uavdt_trainval_imagehash_eval,78,882,train:det_ucystr__1028.jpg
+uavdt,uavdt_trainval_imagehash_eval,79,888,train:det_ucystr__1045.jpg
+uavdt,uavdt_trainval_imagehash_eval,80,889,train:det_ucystr__1046.jpg
+uavdt,uavdt_trainval_imagehash_eval,81,894,train:det_ucystr__1077.jpg
+uavdt,uavdt_trainval_imagehash_eval,82,921,train:det_ucystr__1188.jpg
+uavdt,uavdt_trainval_imagehash_eval,83,933,train:det_ucystr__1275.jpg
+uavdt,uavdt_trainval_imagehash_eval,84,939,train:det_ucystr__1315.jpg
+uavdt,uavdt_trainval_imagehash_eval,85,943,train:det_ucystr__1327.jpg
+uavdt,uavdt_trainval_imagehash_eval,86,965,train:det_ucystr__1417.jpg
+uavdt,uavdt_trainval_imagehash_eval,87,974,train:det_ucystr__1498.jpg
+uavdt,uavdt_trainval_imagehash_eval,88,977,train:det_ucystr__1522.jpg
+uavdt,uavdt_trainval_imagehash_eval,89,978,train:det_ucystr__1527.jpg
+uavdt,uavdt_trainval_imagehash_eval,90,990,train:det_ucystr__1590.jpg
+uavdt,uavdt_trainval_imagehash_eval,91,991,train:det_ucystr__1593.jpg
+uavdt,uavdt_trainval_imagehash_eval,92,999,train:det_ucystr__1638.jpg
+uavdt,uavdt_trainval_imagehash_eval,93,1007,train:det_ucystr__1671.jpg
+uavdt,uavdt_trainval_imagehash_eval,94,1011,train:det_ucystr__1691.jpg
+uavdt,uavdt_trainval_imagehash_eval,95,1016,train:det_ucystr__1723.jpg
+uavdt,uavdt_trainval_imagehash_eval,96,1025,train:det_ucystr__1778.jpg
+uavdt,uavdt_trainval_imagehash_eval,97,1026,train:det_ucystr__1787.jpg
+uavdt,uavdt_trainval_imagehash_eval,98,1047,train:det_ucystr__211.jpg
+uavdt,uavdt_trainval_imagehash_eval,99,1060,train:det_ucystr__267.jpg
+uavdt,uavdt_trainval_imagehash_eval,100,1068,train:det_ucystr__325.jpg
+uavdt,uavdt_trainval_imagehash_eval,101,1069,train:det_ucystr__329.jpg
+uavdt,uavdt_trainval_imagehash_eval,102,1070,train:det_ucystr__333.jpg
+uavdt,uavdt_trainval_imagehash_eval,103,1089,train:det_ucystr__409.jpg
+uavdt,uavdt_trainval_imagehash_eval,104,1104,train:det_ucystr__485.jpg
+uavdt,uavdt_trainval_imagehash_eval,105,1120,train:det_ucystr__565.jpg
+uavdt,uavdt_trainval_imagehash_eval,106,1137,train:det_ucystr__673.jpg
+uavdt,uavdt_trainval_imagehash_eval,107,1138,train:det_ucystr__676.jpg
+uavdt,uavdt_trainval_imagehash_eval,108,1139,train:det_ucystr__69.jpg
+uavdt,uavdt_trainval_imagehash_eval,109,1140,train:det_ucystr__696.jpg
+uavdt,uavdt_trainval_imagehash_eval,110,1143,train:det_ucystr__700.jpg
+uavdt,uavdt_trainval_imagehash_eval,111,1154,train:det_ucystr__763.jpg
+uavdt,uavdt_trainval_imagehash_eval,112,1163,train:det_ucystr__834.jpg
+uavdt,uavdt_trainval_imagehash_eval,113,1167,train:det_ucystr__854.jpg
+uavdt,uavdt_trainval_imagehash_eval,114,1179,train:det_ucystr__901.jpg
+uavdt,uavdt_trainval_imagehash_eval,115,1181,train:det_ucystr__904.jpg
+uavdt,uavdt_trainval_imagehash_eval,116,1186,train:det_ucystr__940.jpg
+uavdt,uavdt_trainval_imagehash_eval,117,1188,train:det_ucystr__955.jpg
+uavdt,uavdt_trainval_imagehash_eval,118,1193,train:det_ucystr__969.jpg
+uavdt,uavdt_trainval_imagehash_eval,119,1215,train:dji5400451_2.jpg
+uavdt,uavdt_trainval_imagehash_eval,120,1239,val:dji_399_150m00701_2.jpg
+uavdt,uavdt_trainval_imagehash_eval,121,1242,val:dji_399_150m00801_2.jpg
+uavdt,uavdt_trainval_imagehash_eval,122,1261,val:dji_477_150m00201_1.jpg
+uavdt,uavdt_trainval_imagehash_eval,123,1271,val:dji_478_150m00901_3.jpg
+uavdt,uavdt_trainval_imagehash_eval,124,1282,val:dji_64_150m02001_1.jpg
+uavdt,uavdt_trainval_imagehash_eval,125,1290,val:dji_65_150m00201_5.jpg
+uavdt,uavdt_trainval_imagehash_eval,126,1295,val:dji_65_150m01601_5.jpg
+uavdt,uavdt_trainval_imagehash_eval,127,1296,val:dji_65_150m01801_2.jpg
+uavdt,uavdt_trainval_imagehash_eval,128,1301,val:dji_65_150m02601_5.jpg
+uavdt,uavdt_trainval_imagehash_eval,129,1313,val:djibridge_150m00201_5.jpg
+uavdt,uavdt_trainval_imagehash_eval,130,1330,val:lim_1575.jpg
+uavdt,uavdt_trainval_imagehash_eval,131,1351,val:pavilion_048_1350.jpg
+uavdt,uavdt_trainval_imagehash_eval,132,1355,val:pavilion_048_1815.jpg
+uavdt,uavdt_trainval_imagehash_eval,133,1362,val:pavilion_048_2280.jpg
+uavdt,uavdt_trainval_imagehash_eval,134,1366,val:pavilion_048_2565.jpg
+uavdt,uavdt_trainval_imagehash_eval,135,1403,val:pavilion_048_5385.jpg
+uavdt,uavdt_trainval_imagehash_eval,136,1406,val:pavilion_048_5460.jpg
+uavdt,uavdt_trainval_imagehash_eval,137,1409,val:pavilion_048_570.jpg
+uavdt,uavdt_trainval_imagehash_eval,138,1444,val:pavilion_048_8415.jpg
+uavdt,uavdt_trainval_imagehash_eval,139,1473,val:train85.jpg
+uavdt,uavdt_trainval_imagehash_eval,140,1476,val:train9.jpg
+uavdt,uavdt_trainval_imagehash_eval,141,1504,val:traina217.jpg
+uavdt,uavdt_trainval_imagehash_eval,142,1512,val:traina256.jpg
+uavdt,uavdt_trainval_imagehash_eval,143,1520,val:traina323.jpg
+uavdt,uavdt_trainval_imagehash_eval,144,1533,val:traina80.jpg

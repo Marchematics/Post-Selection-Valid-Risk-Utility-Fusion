@@ -1,0 +1,27 @@
+{
+  "name": "uavdt_trainval_imagehash90_cluster_ratio_ltt",
+  "dataset": "UAVDT train+val derived frozen cache",
+  "risk_unit": "image_cluster_ratio_object_weighted",
+  "family_profile": "base",
+  "family_size": 10,
+  "threshold_grid_size": 175,
+  "selection_rule": "fixed_sequence_LTT_per_contract_then_min_FP_upper",
+  "risk_bound": "one_sided_empirical_bernstein_on_Z=M-alpha*N",
+  "fp_bound": "one_sided_empirical_bernstein_on_clipped_FP_per_image",
+  "alpha": 0.16,
+  "beta_fp_per_image": 150,
+  "fp_clip_B": 300,
+  "matching_iou": 0.25,
+  "confidence": 0.95,
+  "calibration_fraction_percent": 90,
+  "lockbox_fraction_percent": 10,
+  "status": "screened_cluster_ratio_certificate; not independent deployment lockbox",
+  "files": {
+    "scripts/cluster_ratio_ltt_audit.py": "28945afc3e08b19e33a0630becd2c8c496f7be885e8859f5f637bcab456ba8a0",
+    "scripts/build_combined_cache_split.py": "1f0badaedb534ea609198a0bccabed9747af3bca7927e8e2537b20ee20a2f744",
+    "output/cluster_ratio/manifests90/uavdt_trainval_imagehash_cal.csv": "189d90725efc449e87c5434957dbd4a32b94b0185e52d234dfe376130babc1ad",
+    "output/cluster_ratio/manifests90/uavdt_trainval_imagehash_eval.csv": "be5baa616b28bedc436af80badb3c8e30d4cc2e8ff9cebc7f05053d0ccd3bc8d",
+    "output/tables/cluster_ratio_trainval_imagehash90_full_uavdt_image_a0.16_iou0.25_base_eb_selected.csv": "1a44135c28d6f5355e83e2a3283459a28ca68b516b12391f7b56a0c79709c9bc",
+    "output/tables/cluster_ratio_trainval_imagehash90_full_uavdt_image_a0.16_iou0.25_base_eb_candidates.csv": "96c144daf49f425392312997b28c0a2552eae67968c9d84aab766998f783f888"
+  }
+}

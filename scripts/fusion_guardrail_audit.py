@@ -10,6 +10,7 @@ calibration target used to select the final confidence threshold.
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import sys
 
@@ -32,8 +33,8 @@ from certify_miss_risk import (  # noqa: E402
 
 
 TABLE_DIR = ROOT / "output" / "tables"
-UAVDT_COMBINED = ROOT / "data" / "caches" / "uavdt" / "combined_cache"
-MANIFEST_DIR = ROOT / "data" / "manifests" / "uavdt"
+UAVDT_COMBINED = Path(os.environ.get("UAVDT_COMBINED", ROOT / "data" / "caches" / "uavdt" / "combined_cache"))
+MANIFEST_DIR = Path(os.environ.get("UAVDT_MANIFEST_DIR", ROOT / "data" / "manifests" / "uavdt"))
 
 
 def class_aware_nms(pred: pd.DataFrame, iou_threshold: float | None) -> pd.DataFrame:
