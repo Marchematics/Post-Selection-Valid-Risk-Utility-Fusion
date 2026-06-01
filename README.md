@@ -41,7 +41,7 @@ From the repository root:
 bash run_reproduce_tables.sh
 ```
 
-The script regenerates the main UAVDT finite-family rows, the risk-margin variant, the family-corrected certificate, VisDrone relaxed-target rows, and IoU 0.50 boundary rows. Outputs are written to `output/tables/`.
+The script regenerates the main UAVDT finite-family rows, the risk-margin variant, the family-corrected certificate, the sequence-support stress row, VisDrone relaxed-target rows, and IoU 0.50 boundary rows. Outputs are written to `output/tables/`.
 
 The included CSV files are the exact tables used for the submitted manuscript.
 
@@ -55,4 +55,3 @@ python scripts/post_selection_family_audit.py \
   --iou 0.25 \
   --out-prefix smoke_check
 ```
-

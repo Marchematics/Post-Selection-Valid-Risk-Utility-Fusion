@@ -18,6 +18,16 @@ python scripts/post_selection_family_audit.py \
 
 python scripts/post_selection_family_audit.py \
   --dataset uavdt \
+  --splits sequence_lockbox \
+  --alpha 0.16 \
+  --alpha-select 0.0525 \
+  --iou 0.25 \
+  --family-profile track \
+  --family-correct \
+  --out-prefix post_selection_track_probe_fc
+
+python scripts/post_selection_family_audit.py \
+  --dataset uavdt \
   --splits random1,random2,random3,random4,random5,image_lockbox \
   --alpha 0.16 \
   --alpha-select 0.151 \
@@ -68,4 +78,3 @@ python scripts/post_selection_family_audit.py \
   --out-prefix post_selection_family_iou
 
 python paper/figures/gen_fig2_sequence_sensitivity.py
-

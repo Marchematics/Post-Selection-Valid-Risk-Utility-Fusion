@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import math
+import os
 import re
 import sys
 from dataclasses import dataclass, asdict
@@ -37,10 +38,10 @@ from fusion_guardrail_audit import cap_per_image, class_aware_nms  # noqa: E402
 
 
 TABLE_DIR = ROOT / "output" / "tables"
-UAVDT_CACHE = ROOT / "data" / "caches" / "uavdt" / "combined_cache"
-VISDRONE_CACHE = ROOT / "data" / "caches" / "visdrone" / "combined_cache"
-UAVDT_MANIFEST_DIR = ROOT / "data" / "manifests" / "uavdt"
-VISDRONE_MANIFEST_DIR = ROOT / "data" / "manifests" / "visdrone"
+UAVDT_CACHE = Path(os.environ.get("UAVDT_CACHE", ROOT / "data" / "caches" / "uavdt" / "combined_cache"))
+VISDRONE_CACHE = Path(os.environ.get("VISDRONE_CACHE", ROOT / "data" / "caches" / "visdrone" / "combined_cache"))
+UAVDT_MANIFEST_DIR = Path(os.environ.get("UAVDT_MANIFEST_DIR", ROOT / "data" / "manifests" / "uavdt"))
+VISDRONE_MANIFEST_DIR = Path(os.environ.get("VISDRONE_MANIFEST_DIR", ROOT / "data" / "manifests" / "visdrone"))
 
 
 @dataclass(frozen=True)
@@ -56,6 +57,7 @@ class Contract:
     single_penalty_960: float = 1.0
     unsupported_floor: float = 0.0
     seq_center: float | None = None
+    seq_bonus: float = 0.0
     seq_penalty: float = 1.0
     seq_unsupported_floor: float = 0.0
 
@@ -105,6 +107,70 @@ FAMILY: tuple[Contract, ...] = (
         single_penalty_960=0.88,
     ),
 )
+
+
+TRACK_CONTRACTS: tuple[Contract, ...] = (
+    Contract(
+        "track_soft_a",
+        nms_iou=0.40,
+        max_det=300,
+        seq_center=0.025,
+        seq_bonus=0.04,
+        seq_penalty=0.90,
+    ),
+    Contract(
+        "track_soft_b",
+        nms_iou=0.40,
+        max_det=300,
+        seq_center=0.035,
+        seq_bonus=0.06,
+        seq_penalty=0.85,
+    ),
+    Contract(
+        "source_track_a",
+        nms_iou=0.40,
+        max_det=300,
+        support_iou=0.45,
+        dual_bonus=0.04,
+        single_penalty_640=0.80,
+        single_penalty_960=0.90,
+        seq_center=0.030,
+        seq_bonus=0.06,
+        seq_penalty=0.90,
+    ),
+    Contract(
+        "source_track_b",
+        nms_iou=0.40,
+        max_det=300,
+        support_iou=0.45,
+        dual_bonus=0.06,
+        single_penalty_640=0.70,
+        single_penalty_960=0.85,
+        unsupported_floor=0.005,
+        seq_center=0.040,
+        seq_bonus=0.08,
+        seq_penalty=0.95,
+    ),
+    Contract(
+        "track_filter",
+        nms_iou=0.40,
+        max_det=300,
+        seq_center=0.050,
+        seq_bonus=0.08,
+        seq_penalty=0.80,
+        seq_unsupported_floor=0.005,
+    ),
+)
+
+
+def contract_family(profile: str) -> tuple[Contract, ...]:
+    if profile == "base":
+        return FAMILY
+    if profile == "track":
+        return FAMILY + TRACK_CONTRACTS
+    if profile == "track_only":
+        return TRACK_CONTRACTS
+    raise ValueError(f"unknown family profile: {profile}")
 
 
 def fixed_thresholds(grid_size: int) -> list[float]:
@@ -242,6 +308,7 @@ def apply_contract(pred: pd.DataFrame, meta: pd.DataFrame, contract: Contract) -
     if "seq_supported" in out.columns and contract.seq_center is not None:
         seq_supported = out["seq_supported"].astype(bool).to_numpy()
         orig_score = pd.to_numeric(out["score"], errors="coerce").astype(float).to_numpy()
+        score = np.where(seq_supported, np.minimum(1.0, score + float(contract.seq_bonus)), score)
         score = np.where(seq_supported, score, score * float(contract.seq_penalty))
         keep = seq_supported | (orig_score >= float(contract.seq_unsupported_floor))
         out = out.loc[keep].copy()
@@ -356,11 +423,12 @@ def run_split(
     iou: float,
     grid_size: int,
     fp_bound_cap: float,
+    family: tuple[Contract, ...],
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     gt, pred, meta = load_cache(cache, None)
     cal_gt, _, cal_meta_raw = filter_manifest(gt, pred, meta, cal_manifest)
     eval_gt, _, eval_meta_raw = filter_manifest(gt, pred, meta, eval_manifest)
-    m = len(FAMILY)
+    m = len(family)
     threshold_count = len(fixed_thresholds(grid_size))
     if family_correct:
         risk_conf = 1.0 - (1.0 - float(confidence)) / (2.0 * float(m))
@@ -373,7 +441,7 @@ def run_split(
     eval_rows = []
     per_image_rows = []
 
-    for contract in FAMILY:
+    for contract in family:
         ppred = apply_contract(pred, meta, contract)
         cal_gt_c, cal_pred, cal_meta = filter_manifest(gt, ppred, meta, cal_manifest)
         eval_gt_c, eval_pred, eval_meta = filter_manifest(gt, ppred, meta, eval_manifest)
@@ -523,6 +591,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--grid-size", type=int, default=161)
     parser.add_argument("--fp-bound-cap", type=float, default=300.0)
     parser.add_argument("--out-prefix", default="post_selection_family")
+    parser.add_argument("--family-profile", choices=["base", "track", "track_only"], default="base")
     return parser.parse_args()
 
 
@@ -531,6 +600,7 @@ def main() -> None:
     alpha_select = float(args.alpha if args.alpha_select is None else args.alpha_select)
     TABLE_DIR.mkdir(parents=True, exist_ok=True)
     cache = args.cache if args.cache is not None else (UAVDT_CACHE if args.dataset == "uavdt" else VISDRONE_CACHE)
+    family = contract_family(args.family_profile)
     all_candidates = []
     all_selected = []
     all_per_image = []
@@ -550,6 +620,7 @@ def main() -> None:
             iou=args.iou,
             grid_size=args.grid_size,
             fp_bound_cap=args.fp_bound_cap,
+            family=family,
         )
         all_candidates.append(candidates)
         all_selected.append(selected)
@@ -559,6 +630,8 @@ def main() -> None:
     if abs(alpha_select - float(args.alpha)) > 1e-12:
         suffix += f"_sel{alpha_select:g}"
     suffix += f"_iou{args.iou:g}"
+    if args.family_profile != "base":
+        suffix += f"_{args.family_profile}"
     if args.family_correct:
         suffix += "_family"
     candidates = pd.concat(all_candidates, ignore_index=True)
