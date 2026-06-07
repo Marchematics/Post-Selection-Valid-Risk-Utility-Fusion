@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 from matplotlib import pyplot as plt
+import numpy as np
 
 from paper_plot_style import COLORS
 
@@ -32,7 +33,22 @@ def main() -> None:
 
     fig, ax = plt.subplots(1, 1, figsize=(4.15, 2.45))
 
-    ax.plot(x, data["risk"], marker="o", ms=3.6, lw=1.35, color=COLORS["blue"], label="eval miss risk")
+    main_x = [0, 1, np.nan, 3]
+    main_risk = [data.loc[0, "risk"], data.loc[1, "risk"], np.nan, data.loc[3, "risk"]]
+    main_precision = [data.loc[0, "precision"], data.loc[1, "precision"], np.nan, data.loc[3, "precision"]]
+
+    ax.plot(main_x, main_risk, marker="o", ms=3.6, lw=1.35, color=COLORS["blue"], label="eval miss risk")
+    ax.scatter(
+        [2],
+        [data.loc[2, "risk"]],
+        marker="o",
+        s=16,
+        facecolors="white",
+        edgecolors=COLORS["gray"],
+        linewidths=0.9,
+        zorder=3,
+        label="dev stress",
+    )
     ax.axhline(0.16, color=COLORS["gray"], ls="--", lw=0.9, label=r"$\alpha=.16$")
     ax.set_ylabel("miss risk")
     ax.set_ylim(-0.012, 0.175)
@@ -42,7 +58,17 @@ def main() -> None:
     ax.tick_params(axis="x", labelsize=6.0, pad=2)
 
     ax2 = ax.twinx()
-    ax2.plot(x, data["precision"], marker="D", ms=3.2, lw=1.2, color=COLORS["red"], label="precision")
+    ax2.plot(main_x, main_precision, marker="D", ms=3.2, lw=1.2, color=COLORS["red"], label="precision")
+    ax2.scatter(
+        [2],
+        [data.loc[2, "precision"]],
+        marker="D",
+        s=16,
+        facecolors="white",
+        edgecolors=COLORS["gray"],
+        linewidths=0.9,
+        zorder=3,
+    )
     ax2.set_ylabel("precision")
     ax2.set_ylim(0.08, 0.42)
     ax2.tick_params(axis="y", colors=COLORS["red"])
