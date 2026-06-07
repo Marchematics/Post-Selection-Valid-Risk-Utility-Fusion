@@ -23,9 +23,9 @@ The raw UAVDT and VisDrone images are not redistributed. The included cache tabl
 
 These tables are sufficient to rerun the finite-sample audits reported in the Letter.
 
-## Main Validation-Only Audit
+## Main Clean Validation Audit
 
-The main uncontaminated result is the UAVDT validation-only finite-family audit. It compares raw RT-DETR-L/960 with the selected source-support family row on the same image-hash split.
+The main clean result is the UAVDT validation-only finite-family audit. It compares raw RT-DETR-L/960 with the selected source-support family row on the same image-hash split. This is an object-level audit conditional on the declared object-exchangeability unit; the separate cluster-ratio diagnostic reports where image- or sequence-level claims abstain.
 
 From the repository root:
 
@@ -33,7 +33,7 @@ From the repository root:
 bash run_reproduce_tables.sh
 ```
 
-Expected main validation-only row: `support_floor`, CP-U `0.1598`, FP-U `140.2`, evaluation risk `0.1338`, precision `0.2508`, and `83.0` FP/image. Raw 960 on the same split has evaluation risk `0.1402`, precision `0.1369`, and `174.0` FP/image.
+Expected main validation-only row: `support_floor`, CP-U `0.1598`, Hoeffding FP-U `140.2`, empirical-Bernstein FP-U check `145.6`, evaluation risk `0.1338`, precision `0.2508`, and `83.0` FP/image. Raw 960 on the same split has evaluation risk `0.1402`, precision `0.1369`, and `174.0` FP/image.
 
 ## Cluster-Ratio Diagnostics
 
