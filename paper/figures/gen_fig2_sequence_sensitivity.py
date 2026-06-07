@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate post-selection method-chain evidence line chart."""
+"""Generate the main UAVDT result chart used as Fig. 1."""
 
 from __future__ import annotations
 
@@ -11,63 +11,53 @@ from matplotlib import pyplot as plt
 from paper_plot_style import COLORS
 
 
-ROOT = Path(__file__).resolve().parents[2]
 FIG_DIR = Path(__file__).resolve().parent
 
 
 def main() -> None:
-    candidates = pd.read_csv(ROOT / "output/tables/post_selection_family_uavdt_a0.16_iou0.25_candidates.csv")
-    family = pd.read_csv(ROOT / "output/tables/post_selection_family_uavdt_a0.16_iou0.25_family_selected.csv")
-    margin = pd.read_csv(ROOT / "output/tables/post_selection_margin_uavdt_a0.16_sel0.151_iou0.25_selected.csv")
-    image = candidates.loc[candidates["split"] == "image_lockbox"].set_index("contract")
-    margin_image = margin.loc[margin["split"] == "image_lockbox"].iloc[0]
-    rows = [
-        ("Raw", image.loc["raw960"]),
-        ("NMS+cap", image.loc["nms040_cap300"]),
-        ("Utility-best\n$\\tilde{\\alpha}=.160$", image.loc["support_soft_a"]),
-        ("Stability-best\n$\\tilde{\\alpha}=.151$", margin_image),
-    ]
     data = pd.DataFrame(
         {
-            "label": [name for name, _ in rows] + ["Family-\ncorr."],
-            "risk": [row["eval_risk"] for _, row in rows]
-            + [family.loc[family["split"] == "image_lockbox", "eval_risk"].iloc[0]],
-            "precision": [row["eval_precision"] for _, row in rows]
-            + [family.loc[family["split"] == "image_lockbox", "eval_precision"].iloc[0]],
-            "fp_per_image": [row["eval_fp_img"] for _, row in rows]
-            + [family.loc[family["split"] == "image_lockbox", "eval_fp_img"].iloc[0]],
+            "label": [
+                "Raw960 val\nobject",
+                "Family val\nobject",
+                "Train+val\ncluster",
+                "Sequence\nabstain",
+            ],
+            "risk": [0.1402, 0.1338, 0.0306, 0.0024],
+            "precision": [0.1369, 0.2508, 0.3741, 0.2291],
+            "fp_per_image": [174.0, 83.0, 36.9, 93.7],
         }
     )
-    labels = data["label"].tolist()
-    x = list(range(len(labels)))
+    x = list(range(len(data)))
 
-    fig, ax = plt.subplots(1, 1, figsize=(4.15, 2.65))
+    fig, ax = plt.subplots(1, 1, figsize=(4.15, 2.45))
 
-    ax.plot(x, data["risk"], marker="o", ms=3.2, lw=1.25, color=COLORS["blue"], label="image-cert risk")
+    ax.plot(x, data["risk"], marker="o", ms=3.6, lw=1.35, color=COLORS["blue"], label="eval miss risk")
     ax.axhline(0.16, color=COLORS["gray"], ls="--", lw=0.9, label=r"$\alpha=.16$")
     ax.set_ylabel("miss risk")
-    ax.set_ylim(0.118, 0.168)
-    ax.set_xlim(-0.35, len(labels) - 0.65)
+    ax.set_ylim(-0.012, 0.175)
+    ax.set_xlim(-0.35, len(data) - 0.65)
     ax.set_xticks(x)
-    ax.set_xticklabels(labels, rotation=18, ha="right", rotation_mode="anchor", linespacing=1.05)
-    ax.tick_params(axis="x", labelsize=5.2, pad=3)
+    ax.set_xticklabels(data["label"].tolist(), rotation=0, ha="center", linespacing=1.0)
+    ax.tick_params(axis="x", labelsize=6.0, pad=2)
 
     ax2 = ax.twinx()
-    ax2.plot(x, data["precision"], marker="D", ms=3.0, lw=1.1, color=COLORS["red"], label="precision")
+    ax2.plot(x, data["precision"], marker="D", ms=3.2, lw=1.2, color=COLORS["red"], label="precision")
     ax2.set_ylabel("precision")
-    ax2.set_ylim(0.12, 0.31)
+    ax2.set_ylim(0.08, 0.42)
     ax2.tick_params(axis="y", colors=COLORS["red"])
     ax2.yaxis.label.set_color(COLORS["red"])
 
     for i, fp in enumerate(data["fp_per_image"]):
         ax.text(
             i,
-        0.1655,
-            f"{fp:.0f} FP",
+            0.006,
+            f"{fp:.0f} FP/img",
             ha="center",
-            va="top",
-            fontsize=6.5,
+            va="bottom",
+            fontsize=5.8,
             color=COLORS["gray"],
+            bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.82, "pad": 0.3},
         )
 
     handles, labels = ax.get_legend_handles_labels()
@@ -77,18 +67,18 @@ def main() -> None:
         labels + labels2,
         frameon=False,
         loc="upper center",
-        bbox_to_anchor=(0.5, 1.22),
-        ncol=2,
+        bbox_to_anchor=(0.5, 1.20),
+        ncol=3,
         fontsize=6.2,
-        columnspacing=0.9,
-        handlelength=1.3,
+        columnspacing=0.8,
+        handlelength=1.2,
         handletextpad=0.35,
     )
 
-    fig.subplots_adjust(left=0.13, right=0.88, top=0.78, bottom=0.30)
+    fig.subplots_adjust(left=0.13, right=0.88, top=0.77, bottom=0.24)
     for ext in ("pdf", "png"):
         out = FIG_DIR / f"fig_method_chain.{ext}"
-        fig.savefig(out, dpi=300, bbox_inches="tight", pad_inches=0.03)
+        fig.savefig(out, dpi=300, bbox_inches="tight", pad_inches=0.025)
         print(f"Saved {out}")
 
 
