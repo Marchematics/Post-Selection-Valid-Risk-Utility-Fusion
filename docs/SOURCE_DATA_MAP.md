@@ -21,6 +21,9 @@ Manuscript Table I and abstract values:
 - `output/tables/aitod_multiunit_family_replay_nms3_fast_selected.csv`
 - `output/tables/aitod_multiunit_family_replay_nms3_fast_candidates.csv`
 - `output/tables/multi_unit_train_selection_diagnostic_aitod_nmscap_t014_to_val.csv`
+- `output/tables/cluster_size_summary.csv`
+- `output/tables/aitod_loss_cap_alpha_sensitivity.csv`
+- `output/tables/metadata_corrections_audit.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_aitod_train_cache_summary.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_block_operational_iou0.25_aitod_train_cache_summary.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.25_aitod_train_cache_summary.csv`
@@ -59,3 +62,4 @@ Manuscript Table I and abstract values:
 See:
 
 - `docs/claim_audit/PAPER_CLAIM_AUDIT.md`
+- `docs/REPRODUCIBILITY_CARD.md`

@@ -18,6 +18,7 @@ if str(ROOT / "scripts") not in sys.path:
 
 from certify_miss_risk import filter_manifest, load_cache, object_match_table  # noqa: E402
 from cluster_contract_search_fast import (  # noqa: E402
+    AITOD_CACHE,
     UAVDT_CACHE,
     VISDRONE_CACHE,
     loss_values,
@@ -42,6 +43,8 @@ def find_contract(name: str, family_profile: str):
 def default_cache(dataset: str) -> Path:
     if dataset == "uavdt":
         return UAVDT_CACHE
+    if dataset == "aitod":
+        return AITOD_CACHE
     if dataset == "visdrone":
         return VISDRONE_CACHE
     raise ValueError(dataset)
@@ -105,7 +108,7 @@ def eval_one(args: argparse.Namespace, split: str) -> tuple[dict, pd.DataFrame]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dataset", choices=["uavdt", "visdrone"], default="uavdt")
+    parser.add_argument("--dataset", choices=["uavdt", "aitod", "visdrone"], default="uavdt")
     parser.add_argument("--cache", type=Path, default=None)
     parser.add_argument("--eval-cache", type=Path, default=None)
     parser.add_argument("--eval-manifest", type=Path, default=None)

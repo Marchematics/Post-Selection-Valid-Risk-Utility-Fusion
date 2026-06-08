@@ -18,8 +18,8 @@ caches with the following schema:
   `num_gt_ignore`, `num_small_lt24`, `num_tiny_lt16`, `ratio_small`.
 
 The submitted supplementary review package contains the same selected scripts,
-CSV summaries, claim map, and generated figure used to audit the manuscript
-tables.
+CSV summaries, metadata-correction audit, claim map, reproducibility card, and
+generated figure used to audit the manuscript tables.
 
 Ready-to-paste manuscript wording:
 

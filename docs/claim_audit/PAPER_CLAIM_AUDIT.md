@@ -1,15 +1,27 @@
 # Paper Claim Audit Report
 
 **Date**: 2026-06-08  
-**Audit basis**: manuscript values checked against included CSV outputs  
-**Paper**: `Cluster-Aware Risk-Utility Audit for Low-IoU UAV Object-Presence Triage`  
-**Overall Verdict**: PASS for checked quantitative claims in the submitted manuscript package.
+**Auditor**: local executor audit against raw CSV outputs  
+**Paper**: `Cluster-Aware Risk Audit for Low-IoU UAV Object-Presence Triage`  
+**Overall Verdict**: PASS for currently checked quantitative claims; external zero-context review still recommended before submission.
 
 ## Bibliography Invariant
 
 `paper/references.bib` was not edited. Last checked timestamp:
 
 `2026-06-07 20:59:24.037793361 +0800`
+
+## Metadata Invariant
+
+AITOD-derived public result files now use `dataset=aitod` rather than the
+legacy `dataset=uavdt` value inherited from the first UAVDT-oriented script
+path. The metric values were not changed. The complete file-level correction
+log is:
+
+- `output/tables/metadata_corrections_audit.csv`
+
+The current audit found zero remaining `*aitod*` CSV/Parquet files with
+`dataset=uavdt`.
 
 ## Claims Verified
 
@@ -117,6 +129,29 @@ Verified values:
 | Required units if mean fixed | about 1000 image, 635 block, 464 sequence | exact/rounding OK |
 | Available held-out units | 1869 image, 1663 block, 1464 sequence | exact/rounding OK |
 
+The AITOD cluster-size limitation sentence matches:
+
+- `output/tables/cluster_size_summary.csv`
+
+Verified values:
+
+| Claim location | Paper values | Evidence status |
+|---|---|---|
+| AITOD parsed-sequence cluster size | median 1 image, p90 1 image, max 174 images | exact/rounding OK |
+| AITOD parsed-sequence singleton share | 0.9590 | exact OK; not quoted in main text |
+
+The design-sensitivity sentence matches:
+
+- `output/tables/aitod_loss_cap_alpha_sensitivity.csv`
+
+Verified values:
+
+| Claim location | Paper values | Evidence status |
+|---|---|---|
+| Sensitivity grid size and pass count | 16/27 settings pass all AITOD units | exact match |
+| At alpha 0.16 and cap 300 | 0.7/0.3, 0.8/0.2, 0.9/0.1 all pass | exact match |
+| At alpha 0.16 and cap 100 | 0.8/0.2 and 0.9/0.1 fail image unit | exact match |
+
 ### Utility table
 
 Table III values match `output/tables/review_burden_simulation_v2.csv`.
@@ -199,7 +234,7 @@ Verified values:
 Supported language:
 
 - cluster-aware IoU-0.25 object-presence triage;
-- AITOD image/block/sequence pass;
+- AITOD image/block/parsed-sequence pass, with the parsed-sequence limitation reported;
 - UAVDT image-unit pass only;
 - VisDrone and IoU-0.50 failures;
 - review-burden reduction on AITOD only;
@@ -214,6 +249,6 @@ Unsupported language searched and not found as positive claims:
 - globally optimal operating point;
 - prospective lockbox certification.
 
-## Reader Note
+## Remaining Risk
 
-This file is a claim-to-result map for the submitted review package. It is intended to make the numerical evidence auditable from the included CSV summaries and scripts.
+This is a local executor audit, not a fresh zero-context sub-agent audit. Before submission, rerun the zero-context `/paper-claim-audit` workflow or an external reviewer on the compiled PDF and the listed CSV files.

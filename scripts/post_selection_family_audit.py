@@ -39,8 +39,10 @@ from fusion_guardrail_audit import cap_per_image, class_aware_nms  # noqa: E402
 
 TABLE_DIR = ROOT / "output" / "tables"
 UAVDT_CACHE = Path(os.environ.get("UAVDT_CACHE", ROOT / "data" / "caches" / "uavdt" / "combined_cache"))
+AITOD_CACHE = Path(os.environ.get("AITOD_CACHE", ROOT / "data" / "caches" / "aitod" / "combined_cache"))
 VISDRONE_CACHE = Path(os.environ.get("VISDRONE_CACHE", ROOT / "data" / "caches" / "visdrone" / "combined_cache"))
 UAVDT_MANIFEST_DIR = Path(os.environ.get("UAVDT_MANIFEST_DIR", ROOT / "data" / "manifests" / "uavdt"))
+AITOD_MANIFEST_DIR = Path(os.environ.get("AITOD_MANIFEST_DIR", ROOT / "data" / "manifests" / "aitod"))
 VISDRONE_MANIFEST_DIR = Path(os.environ.get("VISDRONE_MANIFEST_DIR", ROOT / "data" / "manifests" / "visdrone"))
 
 
@@ -564,6 +566,11 @@ def manifest_for(dataset: str, split: str) -> tuple[Path, Path]:
             return (TABLE_DIR / "uavdt_revision_lockbox_cal.csv", TABLE_DIR / "uavdt_revision_lockbox_eval.csv")
         if split == "sequence":
             return (UAVDT_MANIFEST_DIR / "uavdt_val_seq_cal153.csv", UAVDT_MANIFEST_DIR / "uavdt_val_seq_eval152.csv")
+    if dataset == "aitod":
+        if split in {"val", "whole", "aitod_val_cache"}:
+            return (AITOD_MANIFEST_DIR / "aitod_val_all.csv", AITOD_MANIFEST_DIR / "aitod_val_all.csv")
+        if split in {"train", "aitod_train_cache"}:
+            return (AITOD_MANIFEST_DIR / "aitod_train_all.csv", AITOD_MANIFEST_DIR / "aitod_train_all.csv")
     if dataset == "visdrone":
         if split == "image_lockbox":
             return (TABLE_DIR / "visdrone_revision_image_lockbox_cal.csv", TABLE_DIR / "visdrone_revision_image_lockbox_eval.csv")
@@ -574,7 +581,7 @@ def manifest_for(dataset: str, split: str) -> tuple[Path, Path]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dataset", choices=["uavdt", "visdrone"], default="uavdt")
+    parser.add_argument("--dataset", choices=["uavdt", "aitod", "visdrone"], default="uavdt")
     parser.add_argument("--cache", type=Path, default=None, help="Optional cache override with gt_rows/pred_rows/image_meta.")
     parser.add_argument("--splits", default="random1,random2,random3,random4,random5,image_lockbox,sequence_lockbox")
     parser.add_argument("--alpha", type=float, default=0.16)
@@ -599,7 +606,14 @@ def main() -> None:
     args = parse_args()
     alpha_select = float(args.alpha if args.alpha_select is None else args.alpha_select)
     TABLE_DIR.mkdir(parents=True, exist_ok=True)
-    cache = args.cache if args.cache is not None else (UAVDT_CACHE if args.dataset == "uavdt" else VISDRONE_CACHE)
+    if args.cache is not None:
+        cache = args.cache
+    elif args.dataset == "uavdt":
+        cache = UAVDT_CACHE
+    elif args.dataset == "aitod":
+        cache = AITOD_CACHE
+    else:
+        cache = VISDRONE_CACHE
     family = contract_family(args.family_profile)
     all_candidates = []
     all_selected = []

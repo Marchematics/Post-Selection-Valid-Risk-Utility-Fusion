@@ -1,0 +1,9 @@
+dataset,unit,unit_count,image_count,median_images_per_unit,p90_images_per_unit,max_images_per_unit,share_singleton_units,median_gt_per_unit,p90_gt_per_unit
+AITOD val,image,1869,1869,1.0,1.0,1.0,1.0,2.0,33.0
+AITOD val,block,1663,1869,1.0,1.0,24.0,0.9651232711966325,2.0,30.0
+AITOD val,sequence,1464,1869,1.0,1.0,174.0,0.9590163934426229,1.0,18.700000000000045
+UAVDT test,image,272,272,1.0,1.0,1.0,1.0,20.0,46.900000000000006
+UAVDT test,block,206,272,1.0,2.0,7.0,0.7815533980582524,25.0,75.0
+UAVDT test,sequence,69,272,1.0,8.0,57.0,0.6521739130434783,34.0,261.60000000000014
+VisDrone val,image,548,548,1.0,1.0,1.0,1.0,65.0,122.90000000000003
+VisDrone val,sequence,76,548,4.0,18.5,35.0,0.32894736842105265,230.0,1493.0

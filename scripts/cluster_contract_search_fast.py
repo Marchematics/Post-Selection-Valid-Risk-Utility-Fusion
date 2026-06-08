@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fast cluster-unit contract search for operating-point evidence mining.
+"""Fast cluster-unit contract search for TGRS evidence mining.
 
 This development script selects contract+threshold using calibration cluster
 loss bounds and evaluates the selected row on held-out clusters. It precomputes
@@ -39,11 +39,15 @@ UAVDT_CACHE = Path(
     "/root/zjh_UAV_detection/stride/outputs/uavdt/"
     "familyswitch_yolo11m640_to_rtdetrl640/val/combined_cache"
 )
+AITOD_CACHE = Path(
+    "/root/zjh_UAV_detection/experiments/aitod/oracle_route/cache_val_baseline640"
+)
 VISDRONE_CACHE = Path(
     "/root/zjh_UAV_detection/stride/outputs/visdrone/"
     "familyswitch_yolo11m640_to_rtdetrl640/val/combined_cache"
 )
 UAVDT_MANIFEST_DIR = Path("/root/zjh_UAV_detection/reproducibility/manifests/uavdt")
+AITOD_MANIFEST_DIR = Path("/root/zjh_UAV_detection/reproducibility/manifests/aitod")
 VISDRONE_MANIFEST_DIR = Path("/root/zjh_UAV_detection/reproducibility/manifests/visdrone")
 
 
@@ -57,6 +61,11 @@ def manifest_pair(dataset: str, split: str) -> tuple[Path, Path]:
             )
         if split in {"sequence", "seq"}:
             return UAVDT_MANIFEST_DIR / "uavdt_val_seq_cal153.csv", UAVDT_MANIFEST_DIR / "uavdt_val_seq_eval152.csv"
+    if dataset == "aitod":
+        if split in {"val", "whole", "aitod_val_cache"}:
+            return AITOD_MANIFEST_DIR / "aitod_val_all.csv", AITOD_MANIFEST_DIR / "aitod_val_all.csv"
+        if split in {"train", "aitod_train_cache"}:
+            return AITOD_MANIFEST_DIR / "aitod_train_all.csv", AITOD_MANIFEST_DIR / "aitod_train_all.csv"
     if dataset == "visdrone":
         if split in {"sequence", "seq"}:
             return VISDRONE_MANIFEST_DIR / "visdrone_val_seq_cal274.csv", VISDRONE_MANIFEST_DIR / "visdrone_val_seq_eval274.csv"
@@ -68,7 +77,7 @@ def strict_sequence_id(name: str) -> str:
 
     The legacy GRSL parser is intentionally preserved as an option, but it
     treats many UAVDT train names such as `train:DJI-405-720p00201.jpg` as
-    separate sequences. For cluster-unit evidence, the stricter parser
+    separate sequences. For cluster-unit TGRS evidence, the stricter parser
     strips the split prefix and frame-number suffix.
     """
 
@@ -234,7 +243,12 @@ def summarize(counts: dict, values: np.ndarray, *, delta: float, value_range: fl
 
 
 def run(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
-    default = UAVDT_CACHE if args.dataset == "uavdt" else VISDRONE_CACHE
+    if args.dataset == "uavdt":
+        default = UAVDT_CACHE
+    elif args.dataset == "aitod":
+        default = AITOD_CACHE
+    else:
+        default = VISDRONE_CACHE
     cache = args.cache if args.cache is not None else default
     cal_cache = args.cal_cache if args.cal_cache is not None else cache
     eval_cache = args.eval_cache if args.eval_cache is not None else cache
@@ -355,7 +369,7 @@ def run(args: argparse.Namespace) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dataset", choices=["uavdt", "visdrone"], default="uavdt")
+    parser.add_argument("--dataset", choices=["uavdt", "aitod", "visdrone"], default="uavdt")
     parser.add_argument("--cache", type=Path, default=None)
     parser.add_argument("--cal-cache", type=Path, default=None)
     parser.add_argument("--eval-cache", type=Path, default=None)
