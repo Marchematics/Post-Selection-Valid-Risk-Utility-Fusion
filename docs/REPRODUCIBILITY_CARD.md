@@ -25,7 +25,7 @@ Paper: `Cluster-Aware Risk Audit for Low-IoU UAV Object-Presence Triage`
 - Main loss: `0.8 * miss_rate + 0.2 * min(FP/image, 300) / 300`
 - Audit confidence: one-sided Hoeffding bound with confidence `0.95`
 - Main target: `alpha = 0.16`
-- Retrospective replay: 3 NMS-family contracts x 30 thresholds x 3 unit definitions, Bonferroni-corrected train-side Hoeffding bounds, selection target `0.14`
+- Train-side replay: 3 NMS-family contracts x 30 thresholds x 3 unit definitions, Bonferroni-corrected Hoeffding bounds, selection target `0.14`
 
 ## Cache Provenance
 
