@@ -1,55 +1,61 @@
 # Source Data Map
 
-This file maps manuscript displays to the source files in the supplement.
+This file maps the submitted GRSL manuscript displays and quantitative claims
+to repository files.
 
-## Fig. 1
+## Main Cluster Audit
 
-- Figure script: `paper/figures/gen_fig2_sequence_sensitivity.py`
-- Generated figure: `paper/figures/fig_method_chain.pdf`
-- Source CSVs:
-  - `output/tables/post_selection_family_uavdt_a0.16_iou0.25_candidates.csv`
-  - `output/tables/post_selection_family_uavdt_a0.16_iou0.25_family_selected.csv`
-  - `output/tables/cluster_ratio_trainval_imagehash90_full_uavdt_image_a0.16_iou0.25_base_eb_selected.csv`
-  - `output/tables/cluster_ratio_trainval_seqhash90_probe_uavdt_sequence_a0.16_iou0.25_base_eb_selected.csv`
+Manuscript Table I and abstract values:
 
-## Table I
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_aitod_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_block_operational_iou0.25_aitod_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.25_aitod_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_uavdt_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_uavdt_test_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_uavdt_uavdt_nms040_cap300_t0.125_block_operational_iou0.25_uavdt_test_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_uavdt_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.25_uavdt_test_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_visdrone_visdrone_nms040_cap300_t0.125_image_operational_iou0.25_visdrone_oracle_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_visdrone_visdrone_nms040_cap300_t0.125_sequence_operational_iou0.25_visdrone_oracle_val_cache_summary.csv`
 
-- Raw960 and family object-level rows:
-  - `output/tables/post_selection_family_uavdt_a0.16_iou0.25_candidates.csv`
-  - `output/tables/post_selection_family_uavdt_a0.16_iou0.25_family_selected.csv`
-- Validation-only cluster-ratio abstention:
-  - `output/tables/cluster_ratio_valonly_imagehash_nmax_uavdt_image_a0.16_iou0.25_base_eb_bounds.csv`
-  - `output/tables/cluster_ratio_valonly_imagehash_nmax_uavdt_image_a0.16_iou0.25_base_eb_selected.csv`
-- Train+val cluster-ratio development stress:
-  - `output/tables/cluster_ratio_trainval_imagehash90_full_uavdt_image_a0.16_iou0.25_base_eb_bounds.csv`
-  - `output/tables/cluster_ratio_trainval_imagehash90_full_uavdt_image_a0.16_iou0.25_base_eb_selected.csv`
-- Sequence-ratio abstention:
-  - `output/tables/cluster_ratio_trainval_seqhash90_probe_uavdt_sequence_a0.16_iou0.25_base_eb_bounds.csv`
-  - `output/tables/cluster_ratio_trainval_seqhash90_probe_uavdt_sequence_a0.16_iou0.25_base_eb_selected.csv`
+## AITOD Train-Side Replay and Sensitivity
 
-## Table II
+- `output/tables/aitod_multiunit_family_replay_nms3_fast_selected.csv`
+- `output/tables/aitod_multiunit_family_replay_nms3_fast_candidates.csv`
+- `output/tables/multi_unit_train_selection_diagnostic_aitod_nmscap_t014_to_val.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_aitod_train_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_block_operational_iou0.25_aitod_train_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.25_aitod_train_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_ablation_uavdt_raw960_t0.0075_image_operational_iou0.25_aitod_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_ablation_uavdt_nms040_t0.02_image_operational_iou0.25_aitod_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_ablation_uavdt_nms040_cap300_t0.075_image_operational_iou0.25_aitod_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_ablation_uavdt_nms040_cap300_t0.15_image_operational_iou0.25_aitod_val_cache_summary.csv`
 
-- Validation utility and margin screens:
-  - `output/tables/post_selection_family_uavdt_a0.16_iou0.25_selected.csv`
-  - `output/tables/post_selection_family_uavdt_a0.16_iou0.25_candidates.csv`
-  - `output/tables/post_selection_margin_uavdt_a0.16_sel0.151_iou0.25_selected.csv`
-  - `output/tables/post_selection_margin_uavdt_a0.16_sel0.151_iou0.25_candidates.csv`
-- UAVDT sequence-support and sequence-ratio rows:
-  - `output/tables/cluster_ratio_trainval_seqhash90_probe_uavdt_sequence_a0.16_iou0.25_base_eb_selected.csv`
-- VisDrone transfer rows:
-  - `output/tables/post_selection_family_visdrone_a0.25_iou0.25_selected.csv`
-  - `output/tables/post_selection_family_guarded_select_visdrone_a0.29_iou0.25_selected.csv`
-- UAVDT IoU 0.50 localization boundary:
-  - `output/tables/post_selection_family_iou_uavdt_a0.25_iou0.5_selected.csv`
+## Figure and Review-Burden Diagnostics
 
-## Split Manifests
+- Figure: `paper/figures/risk_utility_diagnostics.pdf`
+- Figure script: `scripts/plot_risk_utility_diagnostics.py`
+- Sample-size CSVs:
+  - `output/tables/fixed_unit_size_projection_aitod_val_nmscap0125_image_summary.csv`
+  - `output/tables/fixed_unit_size_projection_aitod_val_nmscap0125_block_summary.csv`
+  - `output/tables/fixed_unit_size_projection_aitod_val_nmscap0125_sequence_summary.csv`
+- Review burden: `output/tables/review_burden_simulation_v2.csv`
+- Top-K review simulation: `output/tables/topk_review_simulation.csv`
+- AP diagnostics:
+  - `output/tables/ap_diagnostics_aitod_val_positive_summary.csv`
+  - `output/tables/ap_diagnostics_uavdt_test_positive_summary.csv`
+  - `output/tables/ap_diagnostics_visdrone_oracle_val_negative_summary.csv`
 
-Split manifests are in:
+## Localization-Tier Boundaries
 
-- `data/manifests/uavdt/`
-- `data/manifests/visdrone/`
-- image-hash manifests stored with result tables:
-  - `output/tables/uavdt_revision_image_lockbox_cal.csv`
-  - `output/tables/uavdt_revision_image_lockbox_eval.csv`
-  - `output/tables/visdrone_revision_image_lockbox_cal.csv`
-  - `output/tables/visdrone_revision_image_lockbox_eval.csv`
+- `output/tables/localization_tier_boundary_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_iou35_aitod_uavdt_nms040_cap300_t0.125_image_operational_iou0.35_aitod_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_iou35_aitod_uavdt_nms040_cap300_t0.125_block_operational_iou0.35_aitod_val_cache_summary.csv`
+- `output/tables/fixed_cluster_candidate_eval_hoeffding_iou35_aitod_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.35_aitod_val_cache_summary.csv`
+- `output/tables/cluster_contract_search_aitod_train_to_val_stress_uavdt_image_operational_iou0.5_base_eb_min_loss_aitod_train_to_val_nmscap_iou50_image_strict_fc_selected.csv`
+- `output/tables/cluster_contract_search_aitod_train_to_val_stress_uavdt_sequence_operational_iou0.5_base_eb_min_loss_aitod_train_to_val_nmscap_iou50_sequence_strict_fc_selected.csv`
+- `output/tables/cluster_contract_search_uavdt_trainval_to_test_stress_uavdt_image_operational_iou0.5_base_eb_min_loss_trainval_to_test_iou50_strict_fc_selected.csv`
+
+## Full Claim Map
+
+See:
+
+- `docs/claim_audit/PAPER_CLAIM_AUDIT.md`

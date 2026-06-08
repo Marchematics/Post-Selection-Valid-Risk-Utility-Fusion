@@ -1,56 +1,61 @@
-# Post-Selection-Valid Risk-Utility Fusion for UAV Object Detection
+# Cluster-Aware Risk-Utility Audit for Low-IoU UAV Object-Presence Triage
 
-This repository contains the reproducibility materials for the Letter "Post-Selection-Valid Risk-Utility Fusion for UAV Object Detection".
+This repository provides the code-availability package for the GRSL manuscript
+**"Cluster-Aware Risk-Utility Audit for Low-IoU UAV Object-Presence Triage"**.
 
-The repository is anonymized at the file/path level. It contains only relative paths and does not include local workstation paths, user names, manuscript submission files, or raw UAV image files.
+The repository contains audit scripts, selected result CSVs, a claim-to-result
+map, and figure-generation material for the submitted Letter. It does not
+redistribute raw UAV benchmark images.
 
 ## Contents
 
-- `scripts/`: Python code for finite-sample miss-risk certification, finite-family post-selection audits, cluster-ratio diagnostics, and supporting risk-utility experiments.
-- `data/caches/`: derived detector-cache tables for UAVDT and VisDrone. Each cache contains `gt_rows.parquet`, `pred_rows.parquet`, and `image_meta.csv`.
-- `data/manifests/`: deterministic split manifests for random-half, image-hash, sequence-hash, validation-only, and train+val development checks.
-- `output/tables/`: CSV result tables used to produce the manuscript tables and Fig. 1.
-- `paper/figures/`: Fig. 1 source script and generated PDF/PNG.
-- `docs/`: source-data map and data-availability notes.
+- `scripts/`: audit, finite-family replay, AP, localization-tier, review-burden,
+  and figure-generation scripts.
+- `output/tables/`: selected CSV summaries used by the manuscript tables and
+  diagnostics.
+- `paper/figures/risk_utility_diagnostics.pdf`: generated figure used in the
+  manuscript.
+- `docs/claim_audit/PAPER_CLAIM_AUDIT.md`: mapping from manuscript numbers to
+  CSV outputs.
+- `docs/DATA_AVAILABILITY.md`: data and code availability notes.
+- `docs/SOURCE_DATA_MAP.md`: table/figure-to-file map.
 
-## Data Scope
+## Main Evidence
 
-The raw UAVDT and VisDrone images are not redistributed. The included cache tables are derived tabular data:
+The current GRSL claim is intentionally bounded:
 
-- `gt_rows.parquet`: public benchmark boxes converted to a common schema.
-- `pred_rows.parquet`: frozen detector predictions at cached resolutions.
-- `image_meta.csv`: image-level counts and small-object metadata.
+- A fixed `nms040_cap300@0.125` 640+960 contract passes AITOD image, block, and
+  sequence cluster-unit operational-loss audits at IoU 0.25.
+- The same fixed row passes UAVDT image units but fails UAVDT block/sequence
+  units and VisDrone image/sequence units.
+- AITOD review boxes fall by 64.1% relative to raw RT-DETR-L/960, while
+  precision rises from 0.1834 to 0.4886.
+- IoU 0.35 is supportable on AITOD only with a higher-clutter row, and IoU 0.50
+  remains unsupported at the same target.
 
-These tables are sufficient to rerun the finite-sample audits reported in the Letter.
-
-## Main Clean Validation Audit
-
-The main clean result is the UAVDT validation-only finite-family audit. It compares raw RT-DETR-L/960 with the selected source-support family row on the same image-hash split. This is an object-level audit conditional on the declared object-exchangeability unit; the separate cluster-ratio diagnostic reports where image- or sequence-level claims abstain.
-
-From the repository root:
-
-```bash
-bash run_reproduce_tables.sh
-```
-
-Expected main validation-only row: `support_floor`, CP-U `0.1598`, Hoeffding FP-U `140.2`, empirical-Bernstein FP-U check `145.6`, evaluation risk `0.1338`, precision `0.2508`, and `83.0` FP/image. Raw 960 on the same split has evaluation risk `0.1402`, precision `0.1369`, and `174.0` FP/image.
-
-## Cluster-Ratio Diagnostics
-
-The cluster-ratio diagnostic uses image units and the statistic `M_g - alpha N_g` to avoid object-iid assumptions. It is reported as a diagnostic rather than the headline.
-
-```bash
-bash run_reproduce_cluster_ratio.sh
-```
-
-Expected validation-only cluster-ratio outcome: abstention (`z_upper=15.558`, FP-U `335.1`). Expected train+val development row: `support_floor`, threshold `0.03125`, `z_upper=-0.0073`, FP-U `52.1`, evaluation risk `0.0306`, precision `0.3741`, and `36.9` FP/image. The train+val row is marked development stress because it mixes source splits and is not sequence-disjoint.
+The repository should therefore be read as code and result availability for a
+cluster-aware operating-point audit, not as a deployment-safety certificate.
 
 ## Environment
 
-Python 3.10 or later is recommended. Install dependencies with:
+Python 3.10 or later is recommended.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Required Python packages are `numpy`, `pandas`, `scipy`, `matplotlib`, and `pyarrow`.
+Required Python packages are `numpy`, `pandas`, `scipy`, `matplotlib`, and
+`pyarrow`.
+
+## Reproducing Tables
+
+The included CSVs are the submitted result summaries. To inspect the numerical
+claim mapping:
+
+```bash
+sed -n '1,240p' docs/claim_audit/PAPER_CLAIM_AUDIT.md
+```
+
+The scripts can be rerun when compatible derived detector caches are available
+locally. Raw public benchmark images are not included in this repository.
+Selected commands and file outputs are listed in `docs/SOURCE_DATA_MAP.md`.

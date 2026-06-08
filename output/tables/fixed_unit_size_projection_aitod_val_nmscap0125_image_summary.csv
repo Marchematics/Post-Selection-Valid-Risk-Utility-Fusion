@@ -1,0 +1,2 @@
+label,units_path,unit_count,mean_loss,hoeffding_upper,target,confidence,required_n_if_mean_fixed,current_pass
+aitod_val_nmscap0125_image,output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_aitod_val_cache_units.parquet,1869,0.12129633445619252,0.14960581174611381,0.16,0.95,999.9281764773237,True

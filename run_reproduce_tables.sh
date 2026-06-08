@@ -1,80 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-python scripts/post_selection_family_audit.py \
-  --dataset uavdt \
-  --splits random1,random2,random3,random4,random5,image_lockbox,sequence_lockbox \
-  --alpha 0.16 \
-  --iou 0.25 \
-  --out-prefix post_selection_family
+echo "This repository includes selected submitted result CSVs."
+echo "Inspect docs/claim_audit/PAPER_CLAIM_AUDIT.md for the table-to-file map."
+echo "Rerunning the audit scripts requires compatible derived detector caches."
 
-python scripts/post_selection_family_audit.py \
-  --dataset uavdt \
-  --splits image_lockbox \
-  --alpha 0.16 \
-  --iou 0.25 \
-  --family-correct \
-  --out-prefix post_selection_family
-
-python scripts/post_selection_family_audit.py \
-  --dataset uavdt \
-  --splits sequence_lockbox \
-  --alpha 0.16 \
-  --alpha-select 0.0525 \
-  --iou 0.25 \
-  --family-profile track \
-  --family-correct \
-  --out-prefix post_selection_track_probe_fc
-
-python scripts/post_selection_family_audit.py \
-  --dataset uavdt \
-  --splits random1,random2,random3,random4,random5,image_lockbox \
-  --alpha 0.16 \
-  --alpha-select 0.151 \
-  --iou 0.25 \
-  --out-prefix post_selection_margin
-
-python scripts/post_selection_family_audit.py \
-  --dataset visdrone \
-  --splits image_lockbox,sequence \
-  --alpha 0.20 \
-  --iou 0.25 \
-  --out-prefix post_selection_family
-
-python scripts/post_selection_family_audit.py \
-  --dataset visdrone \
-  --splits image_lockbox,sequence \
-  --alpha 0.25 \
-  --iou 0.25 \
-  --out-prefix post_selection_family
-
-python scripts/post_selection_family_audit.py \
-  --dataset visdrone \
-  --splits image_lockbox,sequence \
-  --alpha 0.29 \
-  --iou 0.25 \
-  --out-prefix post_selection_family_guarded_select
-
-python scripts/post_selection_family_audit.py \
-  --dataset visdrone \
-  --splits image_lockbox,sequence \
-  --alpha 0.30 \
-  --iou 0.25 \
-  --out-prefix post_selection_family
-
-python scripts/post_selection_family_audit.py \
-  --dataset uavdt \
-  --splits image_lockbox \
-  --alpha 0.25 \
-  --iou 0.50 \
-  --out-prefix post_selection_family_iou
-
-python scripts/post_selection_family_audit.py \
-  --dataset visdrone \
-  --splits image_lockbox \
-  --alpha 0.30 \
-  --beta-fp 200 \
-  --iou 0.50 \
-  --out-prefix post_selection_family_iou
-
-python paper/figures/gen_fig2_sequence_sensitivity.py
+python - <<'PY'
+from pathlib import Path
+required = [
+    "docs/claim_audit/PAPER_CLAIM_AUDIT.md",
+    "output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_aitod_val_cache_summary.csv",
+    "output/tables/review_burden_simulation_v2.csv",
+    "output/tables/localization_tier_boundary_summary.csv",
+    "paper/figures/risk_utility_diagnostics.pdf",
+]
+missing = [p for p in required if not Path(p).exists()]
+if missing:
+    raise SystemExit("Missing required availability files: " + ", ".join(missing))
+print("Availability files present:", len(required))
+PY
