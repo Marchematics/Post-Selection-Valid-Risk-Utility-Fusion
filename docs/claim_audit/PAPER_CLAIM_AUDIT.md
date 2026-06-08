@@ -1,254 +1,150 @@
 # Paper Claim Audit Report
 
 **Date**: 2026-06-08  
-**Auditor**: local executor audit against raw CSV outputs  
-**Paper**: `Cluster-Aware Risk Audit for Low-IoU UAV Object-Presence Triage`  
-**Overall Verdict**: PASS for currently checked quantitative claims; external zero-context review still recommended before submission.
+**Auditor**: local executor audit against released CSV outputs  
+**Paper**: `Review-Budget-Constrained Calibration for Low-IoU UAV Object-Presence Triage`  
+**Overall verdict**: PASS for the quantitative claims checked below.
 
 ## Bibliography Invariant
 
-`paper/references.bib` was not edited. Last checked timestamp:
+`paper/references.bib` was not edited. Last checked timestamp and size:
 
-`2026-06-07 20:59:24.037793361 +0800`
+`2026-06-07 20:59:24.037793361 +0800`, `7591` bytes.
 
-## Metadata Invariant
+## Main Budget-Constrained Calibration Claims
 
-AITOD-derived public result files now use `dataset=aitod` rather than the
-legacy `dataset=uavdt` value inherited from the first UAVDT-oriented script
-path. The metric values were not changed. The complete file-level correction
-log is:
+Primary source:
 
-- `output/tables/metadata_corrections_audit.csv`
+- `output/tables/grsl_budget_constrained_main_summary.csv`
 
-The current audit found zero remaining `*aitod*` CSV/Parquet files with
-`dataset=uavdt`.
+Verified rounded values:
 
-## Claims Verified
+| Claim location | Paper value | Evidence status |
+|---|---:|---|
+| RT-DETR selected row | `nms040_cap300@0.125` | exact match |
+| RT-DETR train target | `0.14` | exact match |
+| RT-DETR train upper / FP-image | `0.1336` / `10.79` | exact/rounding OK |
+| RT-DETR validation upper / FP-image | `0.1496` / `12.03` | exact/rounding OK |
+| RT-DETR validation precision / miss | `0.4886` / `0.2072` | exact/rounding OK |
+| YOLO-family selected row | `nms040_cap300@0.015` | exact match |
+| YOLO-family train target | `0.13` | exact match |
+| YOLO-family train upper / FP-image | `0.1273` / `20.05` | exact/rounding OK |
+| YOLO-family validation upper / FP-image | `0.1541` / `20.77` | exact/rounding OK |
+| YOLO-family validation precision / miss | `0.3511` / `0.2251` | exact/rounding OK |
+| RT-DETR unconstrained diagnostic | `nms040@0.02`, train upper `0.1051`, FP-image `36.89`, precision `0.2447`, miss `0.1134` | exact/rounding OK |
 
-### Main cluster audit
+Interpretation checked: the paper claims per-cache calibration, not detector-agnostic threshold transfer.
 
-All Abstract and Table I values match the following fixed-candidate Hoeffding summary files for the main row `nms040_cap300@0.125`:
+## Fixed-Threshold Transfer Boundary
 
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_aitod_val_cache_summary.csv`
+Primary source:
+
+- `output/tables/l1_aitod_yolo11n_fixed_aitod_nms040_cap300_t0.125_image_operational_iou0.25_sequence_summary.csv`
+
+Verified rounded values:
+
+| Claim location | Paper value | Evidence status |
+|---|---:|---|
+| Applying RT-DETR threshold to YOLO-family cache | `U_H=0.2435` | exact/rounding OK |
+| YOLO-family fixed-threshold precision / FP-image | `0.6862` / `4.25` | exact/rounding OK |
+| YOLO-family fixed-threshold miss | `0.3590` | exact/rounding OK |
+
+Interpretation checked: the fixed threshold fails the loss audit despite low clutter; this supports detector-specific calibration rather than a universal threshold.
+
+## Conservative-Target Boundary
+
+Primary sources:
+
+- `output/tables/aitod_multiunit_family_replay_nms3_fast_selected.csv`
+- `output/tables/l1_aitod_yolo11n_train_to_val_t014_search_aitod_image_operational_iou0.25_base_hoeffding_min_fp_val_strict_selected.csv`
+- `output/tables/l1_aitod_yolo11n_train_to_val_search_aitod_image_operational_iou0.25_base_hoeffding_min_fp_val_strict_selected.csv`
+
+Verified rounded values:
+
+| Claim location | Paper value | Evidence status |
+|---|---:|---|
+| RT-DETR relaxed train target `0.16` selects | `nms040_cap300@0.175` | exact match |
+| RT-DETR relaxed-row validation upper | `0.1696` | exact/rounding OK |
+| RT-DETR relaxed-row train FP-image | `7.83` | exact/rounding OK |
+| YOLO-family train target `0.14` validation upper | `0.1675` | exact/rounding OK |
+| YOLO-family train target `0.16` validation upper | `0.1872` | exact/rounding OK |
+
+Interpretation checked: stricter `\tilde{\alpha}` values are margin choices exposed by train-to-validation replay, not validation-best thresholds.
+
+## Review Burden and AP Diagnostics
+
+Primary sources:
+
+- `output/tables/review_burden_simulation_v2.csv`
+- `output/tables/topk_review_simulation.csv`
+- `output/tables/ap_diagnostics_aitod_val_positive_summary.csv`
+- `paper/figures/review_budget_tradeoff.pdf`
+- `scripts/plot_risk_utility_diagnostics.py`
+
+Verified rounded values:
+
+| Claim location | Paper value | Evidence status |
+|---|---:|---|
+| Raw RT-DETR boxes / FP-image / miss / precision | `65.55` / `53.53` / `0.1710` / `0.1834` | exact/rounding OK |
+| NMS+cap boxes / FP-image / miss / precision | `23.53` / `12.03` / `0.2072` / `0.4886` | exact/rounding OK |
+| Review-box reduction | `64.1%` | exact/rounding OK |
+| Top-K `K=50` raw boxes / recall / precision | `24.63` / `0.5023` / `0.2958` | exact/rounding OK |
+| Top-K `K=50` NMS+cap boxes / recall / precision | `12.95` / `0.5009` / `0.5611` | exact/rounding OK |
+| AITOD weighted AP25/AP50/AP75 raw | `0.6657` / `0.5734` / `0.1712` | exact match |
+| AITOD weighted AP25/AP50/AP75 NMS+cap | `0.6929` / `0.5821` / `0.1695` | exact match |
+
+Interpretation checked: AP is presented as secondary; the central gain is a review-burden trade-off.
+
+## Scope Boundary Claims
+
+Primary sources:
+
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_block_operational_iou0.25_aitod_val_cache_summary.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.25_aitod_val_cache_summary.csv`
+- `output/tables/cluster_size_summary.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_uavdt_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_uavdt_test_cache_summary.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_uavdt_uavdt_nms040_cap300_t0.125_block_operational_iou0.25_uavdt_test_cache_summary.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_uavdt_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.25_uavdt_test_cache_summary.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_visdrone_visdrone_nms040_cap300_t0.125_image_operational_iou0.25_visdrone_oracle_val_cache_summary.csv`
 - `output/tables/fixed_cluster_candidate_eval_hoeffding_visdrone_visdrone_nms040_cap300_t0.125_sequence_operational_iou0.25_visdrone_oracle_val_cache_summary.csv`
+- `output/tables/localization_tier_boundary_summary.csv`
 
 Verified rounded values:
 
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| Abstract/Table I AITOD image/block/sequence upper | 0.1496 / 0.1414 / 0.1352 | exact/rounding OK |
-| Abstract/Table I AITOD precision and FP/image | 0.4886 and 12.03 | exact/rounding OK |
-| Abstract/Table I UAVDT image upper, precision, FP/image | 0.1558, 0.4963, 27.43 | exact/rounding OK |
-| Table I UAVDT block/sequence fail | 0.1803 / 0.2607 | exact/rounding OK |
-| Table I VisDrone image/sequence fail | 0.3173 / 0.4233 | exact/rounding OK |
+| Claim location | Paper value | Evidence status |
+|---|---:|---|
+| AITOD block / parsed-sequence fixed-row pass | `0.1414` / `0.1352` | exact/rounding OK |
+| AITOD parsed sequence mostly singleton | median `1`, p90 `1` | exact/rounding OK |
+| UAVDT image pass | `0.1558` | exact/rounding OK |
+| UAVDT block / sequence fail | `0.1803` / `0.2607` | exact/rounding OK |
+| VisDrone image / sequence fail | `0.3173` / `0.4233` | exact/rounding OK |
+| AITOD IoU 0.35 low-burden fixed-row image fail | `0.1725` | exact/rounding OK |
+| IoU 0.50 unsupported under `alpha=0.16` | selected-row stresses fail | supported by localization-tier boundary summary |
 
-### AITOD design-sensitivity table
+## Metadata Invariant
 
-All Table II design-sensitivity values match:
+AITOD-derived public result files were corrected to use `dataset=aitod` rather than the legacy `dataset=uavdt` value inherited from earlier UAVDT-oriented script tags. The metric values were not changed. The correction log is:
 
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_ablation_uavdt_raw960_t0.0075_image_operational_iou0.25_aitod_val_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_ablation_uavdt_nms040_t0.02_image_operational_iou0.25_aitod_val_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_ablation_uavdt_nms040_cap300_t0.075_image_operational_iou0.25_aitod_val_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_aitod_val_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_ablation_uavdt_nms040_cap300_t0.15_image_operational_iou0.25_aitod_val_cache_summary.csv`
+- `output/tables/metadata_corrections_audit.csv`
 
-Verified values:
+Some historical filenames still include `aitod_uavdt`; those are legacy contract/script tags. The `dataset` column inside released tables is authoritative.
 
-| Row | Paper values | Evidence status |
-|---|---|---|
-| raw960@0.0075 | upper 0.1285, FP/image 53.53, precision 0.1834 | exact/rounding OK |
-| nms040@0.02 | upper 0.1188, FP/image 38.93 | exact/rounding OK |
-| nms040_cap300@0.075 | upper 0.1331, precision 0.4036, FP/image 17.51 | exact/rounding OK |
-| nms040_cap300@0.125 | upper 0.1496, precision 0.4886, FP/image 12.03 | exact/rounding OK |
-| nms040_cap300@0.15 | upper 0.1597, precision 0.5241, FP/image 10.29 | exact/rounding OK as aggressive ablation, not main row |
-
-### AITOD train-side consistency
-
-The train-side consistency sentence in Section IV matches:
-
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_image_operational_iou0.25_aitod_train_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_block_operational_iou0.25_aitod_train_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_train_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.25_aitod_train_cache_summary.csv`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| AITOD train image/block/sequence upper | 0.1238 / 0.1141 / 0.1114 | exact/rounding OK |
-| AITOD train precision and FP/image | 0.5033 and 10.79 | exact/rounding OK |
-
-The original train-side multi-unit selection diagnostic matches:
-
-- `output/tables/multi_unit_train_selection_diagnostic_aitod_nmscap_t014_to_val.csv`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| Train-side tri-unit rule target | 0.14 for image/block/sequence | exact match |
-| Selected threshold | 0.125 | exact match |
-| Validation all-unit pass at main target | image/block/sequence pass at 0.16 | exact match |
-
-The finite-family replay diagnostic matches:
-
-- `scripts/aitod_multiunit_family_replay_fast.py`
-- `output/tables/aitod_multiunit_family_replay_nms3_fast_selected.csv`
-- `output/tables/aitod_multiunit_family_replay_nms3_fast_candidates.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.175_image_operational_iou0.25_aitod_val_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.175_block_operational_iou0.25_aitod_val_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_aitod_uavdt_nms040_cap300_t0.175_sequence_operational_iou0.25_aitod_val_cache_summary.csv`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| Declared replay size | 270 contract-threshold-unit tests | exact match: 3 contracts x 30 thresholds x 3 units |
-| Strict replay target 0.14 selects | NMS+cap at 0.125 | exact match |
-| Strict replay validation pass | image/block/sequence upper 0.1496 / 0.1414 / 0.1352, all pass at 0.16 | exact/rounding OK |
-| Relaxed replay target 0.16 selects | NMS+cap at 0.175, train FP/image 7.83 | exact/rounding OK |
-| Relaxed replay validation boundary | image/block upper 0.1696 / 0.1608 fail, sequence upper 0.1531 pass | exact/rounding OK |
-
-### AITOD sample-size diagnostic
-
-The Section IV sample-size diagnostic matches:
-
-- `output/tables/fixed_unit_size_projection_aitod_val_nmscap0125_image_summary.csv`
-- `output/tables/fixed_unit_size_projection_aitod_val_nmscap0125_block_summary.csv`
-- `output/tables/fixed_unit_size_projection_aitod_val_nmscap0125_sequence_summary.csv`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| Required units if mean fixed | about 1000 image, 635 block, 464 sequence | exact/rounding OK |
-| Available held-out units | 1869 image, 1663 block, 1464 sequence | exact/rounding OK |
-
-The AITOD cluster-size limitation sentence matches:
-
-- `output/tables/cluster_size_summary.csv`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| AITOD parsed-sequence cluster size | median 1 image, p90 1 image, max 174 images | exact/rounding OK |
-| AITOD parsed-sequence singleton share | 0.9590 | exact OK; not quoted in main text |
-
-The design-sensitivity sentence matches:
-
-- `output/tables/aitod_loss_cap_alpha_sensitivity.csv`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| Sensitivity grid size and pass count | 16/27 settings pass all AITOD units | exact match |
-| At alpha 0.16 and cap 300 | 0.7/0.3, 0.8/0.2, 0.9/0.1 all pass | exact match |
-| At alpha 0.16 and cap 100 | 0.8/0.2 and 0.9/0.1 fail image unit | exact match |
-
-### Utility table
-
-Table III values match `output/tables/review_burden_simulation_v2.csv`.
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| AITOD raw and NMS+cap boxes/FP/miss/precision | 65.55/53.53/0.1710/0.1834 and 23.53/12.03/0.2072/0.4886 | exact/rounding OK |
-| AITOD review-box reduction | 64.1% | rounding OK from 0.6410 |
-| UAVDT rows | 37.77/12.07/0.1215/0.6804 and 54.46/27.43/0.0760/0.4963 | exact/rounding OK |
-| UAVDT box increase | 44.2% | rounding OK from -0.4419 reduction field |
-| VisDrone rows | 74.73/34.04/0.4246/0.5446 and 110.62/60.83/0.2960/0.4501 | exact/rounding OK |
-| VisDrone box increase | 48.0% | arithmetic OK: 110.6241 / 74.7336 - 1 |
-
-### Top-K review simulation
-
-The AITOD human-review simulation sentence matches:
-
-- `output/tables/topk_review_simulation.csv`
-- `paper/figures/risk_utility_diagnostics.pdf`
-- `scripts/plot_risk_utility_diagnostics.py`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| AITOD raw960 top-50 boxes/recall/precision | 24.63 / 0.5023 / 0.2958 | exact/rounding OK |
-| AITOD NMS+cap top-50 boxes/recall/precision | 12.95 / 0.5009 / 0.5611 | exact/rounding OK |
-| Figure risk-utility diagnostics | uses fixed-unit projection and top-K review CSVs | script regenerated successfully |
-
-### AP diagnostics
-
-AP claims match:
-
-- `output/tables/ap_diagnostics_aitod_val_positive_summary.csv`
-- `output/tables/ap_diagnostics_uavdt_test_positive_summary.csv`
-- `output/tables/ap_diagnostics_visdrone_oracle_val_negative_summary.csv`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| AITOD weighted AP25/AP50/AP75 raw vs NMS+cap | 0.6657/0.5734/0.1712 vs 0.6929/0.5821/0.1695 | exact match |
-| UAVDT weighted AP improves slightly but macro AP decreases | wAP25 0.8597 to 0.8738, wAP50 0.7999 to 0.8083; mAP25 0.7120 to 0.6861 | exact match |
-| VisDrone AP improves but cluster risk fails | AP table confirms improvement; cluster summaries confirm failure | exact match |
-
-### Localization-tier boundary diagnostics
-
-Table IV values match:
-
-- `output/tables/localization_tier_boundary_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_iou35_aitod_uavdt_nms040_cap300_t0.125_image_operational_iou0.35_aitod_val_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_iou35_aitod_uavdt_nms040_cap300_t0.125_block_operational_iou0.35_aitod_val_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_iou35_aitod_uavdt_nms040_cap300_t0.125_sequence_operational_iou0.35_aitod_val_cache_summary.csv`
-- `output/tables/cluster_contract_search_hoeffding_aitod_iou35_nms3_minloss_uavdt_image_operational_iou0.35_base_hoeffding_min_loss_aitod_train_to_val_nmscap_iou35_image_strict_fc_selected.csv`
-- `output/tables/cluster_contract_search_hoeffding_aitod_iou35_nms3_minloss_uavdt_block_operational_iou0.35_base_hoeffding_min_loss_aitod_train_to_val_nmscap_iou35_block_strict_fc_selected.csv`
-- `output/tables/cluster_contract_search_hoeffding_aitod_iou35_nms3_minloss_uavdt_sequence_operational_iou0.35_base_hoeffding_min_loss_aitod_train_to_val_nmscap_iou35_sequence_strict_fc_selected.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_iou35_uavdt_uavdt_nms040_cap300_t0.125_image_operational_iou0.35_uavdt_test_cache_summary.csv`
-- `output/tables/fixed_cluster_candidate_eval_hoeffding_iou35_visdrone_visdrone_nms040_cap300_t0.125_image_operational_iou0.35_visdrone_oracle_val_cache_summary.csv`
-- `output/tables/cluster_contract_search_aitod_train_to_val_stress_uavdt_image_operational_iou0.5_base_eb_min_loss_aitod_train_to_val_nmscap_iou50_image_strict_fc_selected.csv`
-- `output/tables/cluster_contract_search_aitod_train_to_val_stress_uavdt_sequence_operational_iou0.5_base_eb_min_loss_aitod_train_to_val_nmscap_iou50_sequence_strict_fc_selected.csv`
-- `output/tables/cluster_contract_search_uavdt_trainval_to_test_stress_uavdt_image_operational_iou0.5_base_eb_min_loss_trainval_to_test_iou50_strict_fc_selected.csv`
-
-Verified values:
-
-| Claim location | Paper values | Evidence status |
-|---|---|---|
-| AITOD fixed IoU0.35 image/block/sequence | 0.1725 fail / 0.1636 fail / 0.1594 pass | exact/rounding OK |
-| AITOD selected IoU0.35 image/block/sequence | 0.1386 / 0.1275 / 0.1222 pass; FP/image 39.25 or 61.25 | exact/rounding OK |
-| UAVDT fixed IoU0.35 image | 0.1613 fail | exact/rounding OK |
-| VisDrone fixed IoU0.35 image | 0.3264 fail | exact/rounding OK |
-| AITOD train-to-val IoU0.50 image upper | 0.2184, fail | exact/rounding OK |
-| AITOD train-to-val IoU0.50 sequence upper | 0.2047, fail | exact/rounding OK |
-| UAVDT train+val-to-test IoU0.50 image upper | 0.1807, fail | exact/rounding OK |
-| Boundary interpretation | IoU0.35 is supportable on AITOD only as higher-clutter min-loss evidence; IoU0.50 remains unsupported | supported by rows above |
-
-## Scope Audit
+## Safe Claim Boundary
 
 Supported language:
 
-- cluster-aware IoU-0.25 object-presence triage;
-- AITOD image/block/parsed-sequence pass, with the parsed-sequence limitation reported;
-- UAVDT image-unit pass only;
-- VisDrone and IoU-0.50 failures;
-- review-burden reduction on AITOD only;
-- `nms040_cap300@0.125` as the main row, with `0.15` reported only as a more aggressive near-boundary ablation.
+- review-budget-constrained image-unit calibration;
+- detector-specific per-cache operating point;
+- AITOD RT-DETR positive review-burden result;
+- AITOD-trained YOLO-family detector-specific positive row;
+- direct fixed-threshold transfer failure;
+- low-IoU object-presence triage;
+- UAVDT/VisDrone, sequence-unit, and IoU-0.50 boundaries.
 
-Unsupported language searched and not found as positive claims:
+Unsupported language:
 
+- detector-agnostic threshold;
 - deployment-safety certificate;
-- standard IoU-0.50 detection control;
-- VisDrone success;
-- UAVDT sequence-level control;
-- globally optimal operating point;
-- prospective lockbox certification.
-
-## Remaining Risk
-
-This is a local executor audit, not a fresh zero-context sub-agent audit. Before submission, rerun the zero-context `/paper-claim-audit` workflow or an external reviewer on the compiled PDF and the listed CSV files.
+- standard IoU-0.50 localization control;
+- sequence-level guarantee;
+- universal transfer across datasets or detectors.

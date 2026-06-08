@@ -1,6 +1,6 @@
 # Data and Code Availability
 
-Code, selected result CSVs, documented split/cache provenance, claim-audit notes,
+Code, selected result CSVs, documented cache provenance, claim-audit notes,
 and figure-generation scripts for the GRSL manuscript are available in this
 repository:
 
@@ -19,7 +19,10 @@ caches with the following schema:
 
 The submitted supplementary review package contains the same selected scripts,
 CSV summaries, metadata-correction audit, claim map, reproducibility card, and
-generated figure used to audit the manuscript tables.
+generated figures used to audit the manuscript tables. The active GRSL claim is
+review-budget-constrained, per-cache calibration for AITOD low-IoU image-review
+triage; the repository also retains boundary diagnostics for UAVDT, VisDrone,
+sequence-style units, and IoU 0.50 stresses.
 
 Ready-to-paste manuscript wording:
 

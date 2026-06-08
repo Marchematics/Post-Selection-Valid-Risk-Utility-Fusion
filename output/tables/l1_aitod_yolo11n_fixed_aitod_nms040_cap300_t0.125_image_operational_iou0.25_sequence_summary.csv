@@ -1,0 +1,2 @@
+dataset,split,contract,threshold,unit,loss,target,iou,confidence,sequence_parser,cache,eval_manifest,whole_cache,unit_count,image_count,object_count,loss_mean,loss_upper,loss_pass,object_risk,precision,fp_per_image,median_fp_per_unit_image,p90_fp_per_unit_image,share_units_fp_ge_100
+aitod,sequence,nms040_cap300,0.125,image,operational,0.16,0.25,0.95,strict,output/l1/aitod_yolo11n_d10_val_combined_cache,,True,1869,1869,27105,0.21523947110048608,0.24354894839040736,False,0.358974358974359,0.6861893290154417,4.251471375066881,1.0,10.0,0.004815409309791332

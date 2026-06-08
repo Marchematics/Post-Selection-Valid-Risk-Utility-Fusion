@@ -1,0 +1,5 @@
+detector,calibration,audit,rule,selection_target,budget_fp_img,contract,threshold,cal_U,cal_fp_img,cal_precision,cal_miss,audit_U,audit_fp_img,audit_precision,audit_miss,audit_loss_pass,audit_budget_pass,audit_joint_pass
+RT-DETR-L 640+960,AITOD train,AITOD val,budget-constrained conservative min-FP,0.14,25.0,nms040_cap300,0.125,0.1335839263547747,10.785352862849534,0.5032900183357965,0.1893982043912412,0.1496058117461138,12.034777956126272,0.4885978673578428,0.2071573510422431,True,True,True
+YOLO11n-family 640+960,AITOD train,AITOD val,budget-constrained conservative min-FP,0.13,25.0,nms040_cap300,0.015,0.1272521334864395,20.045672436751,,,0.1541499742724131,20.766720171214555,0.3511484837339931,0.2250507286478509,True,True,True
+RT-DETR-L 640+960,AITOD train,design diagnostic,unconstrained min-loss target 0.14,0.14,25.0,nms040,0.02,0.1050716360071923,36.89054593874834,0.2447077361787742,0.1134453366519501,,,,,False,False,False
+RT-DETR-L 640+960,AITOD train,design diagnostic,unconstrained min-loss target 0.16,0.16,25.0,nms040,0.02,0.1050716360071923,36.89054593874834,0.2447077361787742,0.1134453366519501,,,,,False,False,False
