@@ -33,8 +33,12 @@ The audit consumes post-processed detector caches. Upstream NMS, score prefilter
 
 | Cache | File | Size | SHA-256 prefix |
 | --- | --- | ---: | --- |
-| AITOD RT-DETR-L 640+960 cache | `pred_rows.parquet` | local derived cache | see released metadata |
-| AITOD RT-DETR-L 640+960 cache | `gt_rows.parquet` | local derived cache | see released metadata |
+| AITOD val 640+960 cache | `pred_rows.parquet` | 20,914,264 | `ce85e2fbeda1` |
+| AITOD val 640+960 cache | `gt_rows.parquet` | 223,283 | `f491287886e7` |
+| AITOD val 640+960 cache | `image_meta.csv` | 86,046 | `7e5f1b0cb84` |
+| AITOD train 640+960 cache | `pred_rows.parquet` | 80,835,199 | `d7551661aefd` |
+| AITOD train 640+960 cache | `gt_rows.parquet` | 771,932 | `98225e888e5c` |
+| AITOD train 640+960 cache | `image_meta.csv` | 347,822 | `627002941270` |
 | UAVDT RT-DETR-L/960 upgrade | `pred_rows.parquet` | 3,723,128 | `afd42134b781` |
 | UAVDT RT-DETR-L/960 upgrade | `gt_rows.parquet` | 189,835 | `b21dd13a7cfe` |
 | UAVDT YOLO11m/640 default | `pred_rows.parquet` | 2,232,526 | `b661c071bbc4` |
@@ -46,6 +50,8 @@ The released package includes derived CSV/Parquet summaries used by the paper.
 Raw public benchmark images and large local detector caches are not redistributed.
 The repository README states that rerunning all raw detector inference requires
 the public datasets plus compatible local detector-cache generation.
+Some historical filenames retain `aitod_uavdt` as a legacy contract/script tag;
+the `dataset` field inside each released table is authoritative.
 
 ## Reported Outputs
 

@@ -3,6 +3,12 @@
 This file maps the submitted GRSL manuscript displays and quantitative claims
 to repository files.
 
+Some historical output filenames retain `aitod_uavdt` as a legacy
+contract/script tag from earlier cache routing. The `dataset` field inside each
+released table is authoritative; AITOD public tables have been corrected to
+`dataset=aitod`, with the repair listed in
+`output/tables/metadata_corrections_audit.csv`.
+
 ## Main Cluster Audit
 
 Manuscript Table I and abstract values:

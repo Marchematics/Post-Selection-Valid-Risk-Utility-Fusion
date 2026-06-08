@@ -28,6 +28,8 @@ The manuscript currently compiles to 5 pages under `\documentclass[journal]{IEEE
 
 The active PDF is aligned to the current GRSL scope: retrospective fixed-row audit, AITOD positive evidence, UAVDT/VisDrone/IoU boundary failures, metadata-corrected AITOD result tables, and explicit low-IoU triage framing.
 
+Some historical output filenames retain `aitod_uavdt` as a legacy contract/script tag from earlier cache routing. The `dataset` field inside the released tables is authoritative; AITOD public tables have been corrected to `dataset=aitod`, with the repair listed in `output/tables/metadata_corrections_audit.csv`.
+
 ## Layout
 
 - `paper/`: manuscript source, compiled PDFs, template files, audit cards.

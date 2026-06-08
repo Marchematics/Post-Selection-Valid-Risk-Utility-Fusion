@@ -1,6 +1,6 @@
 # Data and Code Availability
 
-Code, split manifests when available, selected result CSVs, claim-audit notes,
+Code, selected result CSVs, documented split/cache provenance, claim-audit notes,
 and figure-generation scripts for the GRSL manuscript are available in this
 repository:
 
@@ -23,8 +23,8 @@ generated figure used to audit the manuscript tables.
 
 Ready-to-paste manuscript wording:
 
-> Code, split manifests, result CSVs, and figure-generation scripts are
-> available at
+> Code, result CSVs, figure-generation scripts, and documented split/cache
+> provenance are available at
 > `https://github.com/Marchematics/Post-Selection-Valid-Risk-Utility-Fusion`.
 > The same materials are included in the supplementary review package. Raw
 > benchmark images are public third-party data and are not redistributed.
